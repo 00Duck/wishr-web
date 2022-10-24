@@ -1,0 +1,36 @@
+.theme-primary {
+    color: #0059e3;
+}
+
+.theme-primary-bg {
+    background-color: #0059e3;
+}
+
+.theme-secondary {
+    color: #7487a2;
+}
+
+.theme-secondary-bg {
+    background-color: #7487a2;
+}
+
+html {
+    background-color: #efefef;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+}
+
+.wl-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    color: #777;
+}
+
+.wl-center {
+    text-align: center;
+}
