@@ -1,15 +1,192 @@
 <template>
-    <div>
-        Edit wishlist
-    </div>
+    <form>
+        <div class="wl-container wl-form">
+            <WLEditBar :list="list"></WLEditBar>
+            <label class="theme-primary">Wishlist Name</label>
+            <input type="text" required v-model="list.Name">
+        </div>
+        <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
+            <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+            <div class="wl-field flex-100">
+                <label class="theme-primary">Item Name</label>
+                <input type="text" required v-model="item.Name" placeholder="Name">
+            </div>
+            <div class="wl-field flex-100">
+                <label class="theme-primary">URL</label>
+                <input type="text" required v-model="item.URL" placeholder="URL">
+            </div>
+            <div class="wl-field flex-100">
+                <label class="theme-primary">Notes</label>
+                <input type="text" v-model="item.Notes" placeholder="Notes">
+            </div>
+            <div class="wl-field flex-50">
+                <label class="theme-primary">Price</label>
+                <input type="text" required v-model="item.Price" placeholder="Price">
+            </div>
+            <div class="wl-field flex-50">
+                <label class="theme-primary">Quantity</label>
+                <input type="text" required v-model="item.Quantity" placeholder="Quantity">
+            </div>
+        </div>
+    </form>
+    <button class="wl-add-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
 </template>
 
 <script>
-    export default {
-        
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+import WLEditBar from '@/components/WLEditBar.vue'
+
+export default {
+    components: { WLEditBar },
+    methods: {
+        createListItem: (list) => {
+            list.Items.push({
+                WishList: "",
+                Name: "",
+                URL: "",
+                Notes: "",
+                Price: "",
+                Quantity: 1,
+            })
+        },
+        deleteListItem(list, del_item) {
+            list.Items = list.Items.filter((item) => {
+                return item != del_item
+            })
+        }
+    },
+    setup() {
+        const route = useRoute()
+        const list = ref({
+            ID: "",
+            Name: "",
+            ItemCount: 0,
+            Items: [],
+            Owner: "",
+        })
+        const list_id = ref(route.params.id)
+        const list_err = ref(null)
+
+        onMounted(async () => {
+            //If there's no ID, we're in "create mode". Else we're in edit mode
+            // and need to fetch the ID of the list to edit
+            if (list_id.value) {
+                try {
+                    let data = await fetch('http://localhost:9191/api/prot/wishlist/' + list_id.value)
+                    if (!data.ok) {
+                        throw Error('Error loading wishlist: ' + data.status + ' ' + data.statusText)
+                    }
+                    data = await data.json()
+                    list.value = data.Data
+                } catch (err) {
+                    list_err.value = err.message
+                }
+            }
+            
+        })
+        return { list, list_err }
     }
+}
 </script>
 
-<style lang="scss" scoped>
+<style>
+.wl-form {
+    display: flex;
+    flex-direction: column;
+}
+.wl-form, .wl-form-item {
+    margin-bottom: 15px;
+}
 
+.wl-form input {
+    padding: 10px 10px 10px 0px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    color: #666;
+    width: 100%;
+}
+.wl-form label {
+    margin-top:20px;
+    white-space: nowrap;
+    /* text-transform: uppercase; */
+    /* font-size: 12px; */
+    padding: 5px 5px 5px 0px;
+}
+
+.wl-form-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+.wl-field {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+.wl-delete-btn {
+    color: rgb(228, 0, 4);
+    background-color: transparent;
+    border: 0;
+    /* border-radius: 10px; */
+    /* padding: 4px 10px; */
+    white-space: nowrap;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wl-delete-btn:hover {
+    text-decoration: underline;
+}
+.wl-btn-space {
+    flex: 100%;
+}
+.wl-form-item input {
+    padding: 5px 5px 5px 0px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    color: #666;
+    width: 100%;
+}
+
+.wl-form-item label {
+    white-space: nowrap;
+    /* text-transform: uppercase; */
+    /* font-size: 12px; */
+    padding: 5px 5px 5px 0px;
+    min-width: 80px;
+}
+.flex-100 {
+    flex: 100%;
+}
+.flex-50 {
+    flex: 48%;
+}
+
+.wl-add-btn {
+    width: 100%;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+}
+.wl-field i { /* Mostly for delete button icon */
+    display: inline-block;
+    font-size: 18px;
+    margin-right: 5px;
+}
+.wl-add-btn i {
+    display: inline-block;
+    font-size: 27px;
+}
 </style>

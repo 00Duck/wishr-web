@@ -32,12 +32,10 @@
                 try {
                     let data = await fetch(props.list_url)
                     if (!data.ok) {
-                        console.log(data)
                         throw Error('Error loading list: ' + data.status + ' ' + data.statusText)
                     }
                     data = await data.json()
                     list.value = data.Data
-                    console.log(data)
                 } catch(err) {
                     list_err.value = err.message
                 }
