@@ -10,17 +10,22 @@ const routes = [
   {
     path: '/wishlist/create',
     name: 'wl-create',
-    component: () => import(/* webpackChunkName: "about" */ '../views/EditWishlist.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/EditWishlistView.vue')
+  },
+  {
+    path: '/wishlist/edit/:id',
+    name: 'wl-edit',
+    component: () => import(/* webpackChunkName: "edit" */ '../views/EditWishlistView.vue')
   },
   {
     path: '/wishlist/:id',
     name: 'wl-detail',
-    component: () => import(/* webpackChunkName: "about" */ '../views/WishlistDetail.vue')
+    component: () => import(/* webpackChunkName: "wl-detail" */ '../views/WishlistView.vue')
   },
   {
     path: '/profile',
     name: 'profile',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue')
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
   },
   {
     path: '/about',
