@@ -6,7 +6,7 @@
     <div class="wl-nav">
         <h3>Wishr</h3>
         <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
-        <router-link :to="{'name': 'wl-new'}" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
+        <router-link :to="{'name': 'wl-create'}" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
         <router-link :to="{'name': 'profile'}" class="wl-link"><i class="iconoir-profile-circled"></i>My Profile</router-link>
         <router-link :to="{'name': 'about'}" class="wl-link"><i class="iconoir-question-mark-circle"></i>About</router-link>
     </div>

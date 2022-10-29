@@ -8,8 +8,8 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/wishlist/new',
-    name: 'wl-new',
+    path: '/wishlist/create',
+    name: 'wl-create',
     component: () => import(/* webpackChunkName: "about" */ '../views/EditWishlist.vue')
   },
   {
