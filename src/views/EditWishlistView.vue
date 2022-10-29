@@ -6,7 +6,7 @@
             <input type="text" required v-model="list.Name">
         </div>
         <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-            <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+            <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
             <div class="wl-field flex-100">
                 <label class="theme-primary">Item Name</label>
                 <input type="text" required v-model="item.Name" placeholder="Name">
@@ -111,8 +111,6 @@ export default {
 .wl-form label {
     margin-top:20px;
     white-space: nowrap;
-    /* text-transform: uppercase; */
-    /* font-size: 12px; */
     padding: 5px 5px 5px 0px;
 }
 
@@ -130,11 +128,8 @@ export default {
     margin-bottom: 5px;
 }
 .wl-delete-btn {
-    color: rgb(228, 0, 4);
     background-color: transparent;
     border: 0;
-    /* border-radius: 10px; */
-    /* padding: 4px 10px; */
     white-space: nowrap;
     cursor: pointer;
     display: flex;
@@ -157,8 +152,6 @@ export default {
 
 .wl-form-item label {
     white-space: nowrap;
-    /* text-transform: uppercase; */
-    /* font-size: 12px; */
     padding: 5px 5px 5px 0px;
     min-width: 80px;
 }

@@ -14,6 +14,14 @@
     background-color: #7487a2;
 }
 
+.theme-delete {
+    color: #e40004;
+}
+
+.theme-delete-bg {
+    background-color: #e40004;
+}
+
 html {
     background-color: #efefef;
     height: 100%;

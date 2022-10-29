@@ -2,7 +2,7 @@
     <div class="wl-action-bar">
         <div class="wl-action-item theme-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</div>
         <div class="wl-space"></div>
-        <div class="wl-action-item theme-primary" @click="router.push({name: 'wl-edit'})"><i class="iconoir-page-edit"></i>Edit List</div>
+        <div class="wl-action-item theme-primary" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</div>
         <div class="wl-action-item theme-primary"><i class="iconoir-share-android"></i>Share List</div>
     </div>
 </template>

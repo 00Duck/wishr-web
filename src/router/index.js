@@ -13,7 +13,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/EditWishlistView.vue')
   },
   {
-    path: '/wishlist/edit/:id',
+    path: '/wishlist/edit/:id?',
     name: 'wl-edit',
     component: () => import(/* webpackChunkName: "edit" */ '../views/EditWishlistView.vue')
   },

@@ -2,6 +2,7 @@
     <div class="wl-edit-bar">
         <div class="wl-edit-item theme-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</div>
         <div class="wl-space"></div>
+        <div class="wl-edit-item theme-delete" @click="deleteList(list)"><i class="iconoir-remove-database-script"></i>Delete List</div>
         <div class="wl-edit-item theme-primary" @click="saveList(list)"><i class="iconoir-save-floppy-disk"></i>Save List</div>
     </div>
 </template>
@@ -13,6 +14,11 @@
         methods: {
             saveList: (list) => {
                 console.log(JSON.stringify(list))
+            },
+            deleteList: (list) => {
+                if (confirm("Are you sure you want to delete this list?")) {
+                    console.log(list.ID)
+                }
             }
         },
         setup() {
