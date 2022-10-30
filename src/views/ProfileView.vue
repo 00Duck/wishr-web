@@ -1,13 +1,16 @@
 <template>
-    <div>
+    <Nav></Nav>
+    <div id="main-content">
         profile view
     </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+import Nav from '@/components/Nav.vue'
+
+export default {
+    components: { Nav }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,4 @@
 <template>
-      <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
     <div class="wl-nav">
         <h3>Wishr</h3>
         <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>

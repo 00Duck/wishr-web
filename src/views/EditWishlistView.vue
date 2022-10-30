@@ -1,35 +1,38 @@
 <template>
-    <form>
-        <div class="wl-container wl-form">
-            <WLEditBar :list="list"></WLEditBar>
-            <label class="theme-primary">Wishlist Name</label>
-            <input type="text" required v-model="list.Name">
-        </div>
-        <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-            <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
-            <div class="wl-field flex-100">
-                <label class="theme-primary">Item Name</label>
-                <input type="text" required v-model="item.Name" placeholder="Name">
+    <Nav></Nav>
+    <div id="main-content">
+        <form>
+            <div class="wl-container wl-form">
+                <WLEditBar :list="list"></WLEditBar>
+                <label class="theme-primary">Wishlist Name</label>
+                <input type="text" required v-model="list.Name">
             </div>
-            <div class="wl-field flex-100">
-                <label class="theme-primary">URL</label>
-                <input type="text" required v-model="item.URL" placeholder="URL">
+            <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
+                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+                <div class="wl-field flex-100">
+                    <label class="theme-primary">Item Name</label>
+                    <input type="text" required v-model="item.Name" placeholder="Name">
+                </div>
+                <div class="wl-field flex-100">
+                    <label class="theme-primary">URL</label>
+                    <input type="text" required v-model="item.URL" placeholder="URL">
+                </div>
+                <div class="wl-field flex-100">
+                    <label class="theme-primary">Notes</label>
+                    <input type="text" v-model="item.Notes" placeholder="Notes">
+                </div>
+                <div class="wl-field flex-50">
+                    <label class="theme-primary">Price</label>
+                    <input type="text" required v-model="item.Price" placeholder="Price">
+                </div>
+                <div class="wl-field flex-50">
+                    <label class="theme-primary">Quantity</label>
+                    <input type="text" required v-model="item.Quantity" placeholder="Quantity">
+                </div>
             </div>
-            <div class="wl-field flex-100">
-                <label class="theme-primary">Notes</label>
-                <input type="text" v-model="item.Notes" placeholder="Notes">
-            </div>
-            <div class="wl-field flex-50">
-                <label class="theme-primary">Price</label>
-                <input type="text" required v-model="item.Price" placeholder="Price">
-            </div>
-            <div class="wl-field flex-50">
-                <label class="theme-primary">Quantity</label>
-                <input type="text" required v-model="item.Quantity" placeholder="Quantity">
-            </div>
-        </div>
-    </form>
-    <button class="wl-add-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+        </form>
+        <button class="wl-add-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+    </div>
 </template>
 
 <script>
@@ -37,9 +40,10 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import WLEditBar from '@/components/WLEditBar.vue'
+import Nav from '@/components/Nav.vue'
 
 export default {
-    components: { WLEditBar },
+    components: { WLEditBar, Nav },
     methods: {
         createListItem: (list) => {
             list.Items.push({
@@ -74,7 +78,7 @@ export default {
             // and need to fetch the ID of the list to edit
             if (list_id.value) {
                 try {
-                    let data = await fetch('http://localhost:9191/api/prot/wishlist/' + list_id.value)
+                    let data = await fetch('/api/prot/wishlist/' + list_id.value)
                     if (!data.ok) {
                         throw Error('Error loading wishlist: ' + data.status + ' ' + data.statusText)
                     }

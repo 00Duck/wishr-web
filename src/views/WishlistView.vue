@@ -1,21 +1,24 @@
 <template>
-    <div class="wl-container">
-        <WLActionBar :id="list.ID"></WLActionBar>
-        <h1 class="wl-center">{{ list.Name }}</h1>
-        <p class="wl-center">Created on {{ new Date(list.CreatedAt).toDateString() }}</p>
-        <br />
-        <div v-for="item in list.Items" :key="item.ID" class="wl-detail-line">
-            <ul>
-                <li>
-                    <div class="wl-detail-title">{{ item.Name }}</div>
-                    <div class="wl-url">URL: <a :href="item.URL" target="_blank">{{ snipURL(item.URL) }}</a></div>
-                    <div class="wl-detail-notes">{{ item.Notes }}</div>
-                </li>
-            </ul>
-            <div>
-                <div class="wl-pill">Price: <b>{{ item.Price }}</b></div>
-                <div class="wl-pill">Quantity: <b>{{ item.Quantity }}</b></div>
-                <div class="wl-get-item theme-primary-bg">Get this item</div>
+    <Nav></Nav>
+    <div id="main-content">
+        <div class="wl-container">
+            <WLActionBar :id="list.ID"></WLActionBar>
+            <h1 class="wl-center">{{ list.Name }}</h1>
+            <p class="wl-center">Created on {{ new Date(list.CreatedAt).toDateString() }}</p>
+            <br />
+            <div v-for="item in list.Items" :key="item.ID" class="wl-detail-line">
+                <ul>
+                    <li>
+                        <div class="wl-detail-title">{{ item.Name }}</div>
+                        <div class="wl-url">URL: <a :href="item.URL" target="_blank">{{ snipURL(item.URL) }}</a></div>
+                        <div class="wl-detail-notes">{{ item.Notes }}</div>
+                    </li>
+                </ul>
+                <div>
+                    <div class="wl-pill">Price: <b>{{ item.Price }}</b></div>
+                    <div class="wl-pill">Quantity: <b>{{ item.Quantity }}</b></div>
+                    <div class="wl-get-item theme-primary-bg">Get this item</div>
+                </div>
             </div>
         </div>
     </div>
@@ -26,9 +29,10 @@ import { ref } from 'vue';
 import WLActionBar from '@/components/WLActionBar.vue'
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
+import Nav from '@/components/Nav.vue'
 
 export default {
-    components: { WLActionBar },
+    components: { WLActionBar, Nav },
     methods: {
         snipURL: (url) => {
             if (url.length > 50) {
@@ -45,7 +49,7 @@ export default {
 
         onMounted(async () => {
             try {
-                let data = await fetch('http://localhost:9191/api/prot/wishlist/' + list_id.value)
+                let data = await fetch('/api/prot/wishlist/' + list_id.value)
                 if (!data.ok) {
                     throw Error('Error loading wishlist: ' + data.status + ' ' + data.statusText)
                 }
