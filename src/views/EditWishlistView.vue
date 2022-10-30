@@ -31,7 +31,7 @@
                 </div>
             </div>
         </form>
-        <button class="wl-add-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+        <button class="wishr-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
     </div>
 </template>
 
@@ -166,24 +166,10 @@ export default {
     flex: 48%;
 }
 
-.wl-add-btn {
-    width: 100%;
-    color: #fff;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    border: 0;
-    cursor: pointer;
-}
 .wl-field i { /* Mostly for delete button icon */
     display: inline-block;
     font-size: 18px;
     margin-right: 5px;
 }
-.wl-add-btn i {
-    display: inline-block;
-    font-size: 27px;
-}
+
 </style>

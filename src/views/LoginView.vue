@@ -3,17 +3,18 @@
         <div class="wl-login-container">
             <h2 class="theme-primary">Wishr</h2>
             <form @submit.prevent="login()">
-                <div class="wl-login-field">
+                <div class="wishr-field">
                     <label class="">User Name</label>
                     <input type="text" v-model="loginModel.UserName" />
                 </div>
 
-                <div class="wl-login-field">
+                <div class="wishr-field">
                     <label class="">Password</label>
                     <input type="password" v-model="loginModel.Password" />
                 </div>
                 <div class="wl-login-msg theme-delete" v-if="showMessage()">{{ resp.Message }}</div>
-                <button class="theme-primary-bg wl-login-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
+                <button class="theme-primary-bg wl-login-btn wishr-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
+                <div class="theme-primary wishr-icon-link wl-register"><i class="iconoir-add-database-script"></i><span>Register</span></div>
             </form>
         
         </div>
@@ -81,37 +82,17 @@ export default {
     margin: 0 auto 10px auto;
 }
 
-.wl-login-field {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.wl-login-field input {
-    padding: 10px 10px 10px 2px;
-    border: 0;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    color: #666;
-    width: 100%;
-}
-
 .wl-login-btn {
-    width: 100%;
-    color: #fff;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    border: 0;
-    cursor: pointer;
     margin-top: 50px;
-    font-weight: bold;
 }
 
 .wl-login-msg {
     font-style: italic;
     font-size: 14px;
+}
+
+.wl-register {
+    margin: 20px auto 0 auto;
+    justify-content: center;
 }
 </style>

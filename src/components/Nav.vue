@@ -1,6 +1,6 @@
 <template>
     <div class="wl-nav">
-        <h3>Wishr</h3>
+        <h3><div class="wishr-logo"></div><div>Wishr</div></h3>
         <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
         <router-link :to="{'name': 'wl-create'}" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
         <router-link :to="{'name': 'profile'}" class="wl-link"><i class="iconoir-profile-circled"></i>My Profile</router-link>
@@ -46,5 +46,18 @@
         padding: 0 0 16px 0;
         margin-top: 0;
         border-bottom: 1px solid rgb(250, 250, 250, 0.5);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .wishr-logo {
+        mask:url(@/assets/wishr-logo.svg);
+        mask-size: cover;
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        background: white;
+        margin-right: 15px;
     }
 </style>

@@ -42,3 +42,51 @@ body {
 .wl-center {
     text-align: center;
 }
+
+.wishr-btn {
+    width: 100%;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+.wishr-btn i {
+    font-size: 22px;
+    margin-right: 4px;
+}
+
+.wishr-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.wishr-field input {
+    padding: 10px 10px 10px 2px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    color: #666;
+    width: 100%;
+}
+
+/* A link "button", meant to be a secondary button design. Color it with theme-primary */
+.wishr-icon-link {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+.wishr-icon-link i {
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 22px;
+}
+.wishr-icon-link:hover {
+    text-decoration: underline;
+}

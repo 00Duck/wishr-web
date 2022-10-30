@@ -1,9 +1,9 @@
 <template>
     <Nav></Nav>
     <div id="main-content">
-        <List :list_url="my_lists_url" :title="my_wl_title"></List>
+        <List :list_url="my_lists_url" :title="my_wl_title" :list_empty_msg="my_list_empty" :bg="my_list_bg"></List>
         <br />
-        <List :list_url="shared_lists_url" :title="shared_wl_title"></List>
+        <List :list_url="shared_lists_url" :title="shared_wl_title" :list_empty_msg="shared_list_empty" :bg="shared_list_bg"></List>
     </div>
 </template>
 
@@ -20,11 +20,16 @@ export default {
   setup() {
     const my_lists_url = ref('/api/prot/wishlist')
     const my_wl_title = ref("My Wishlists")
+    const my_list_empty = ref("You don't have any lists yet. Create a new list to get started!")
+    const my_list_bg = ref('wl-bg-clouds')
 
     const shared_lists_url = ref('/api/prot/wishlist')
     const shared_wl_title = ref("Shared with me")
+    const shared_list_empty = ref("No one has shared anything with you yet.")
+    const shared_list_bg = ref('wl-bg-sad')
 
-    return { my_lists_url, my_wl_title, shared_lists_url, shared_wl_title }
+    return { my_lists_url, my_wl_title, my_list_empty, my_list_bg,
+       shared_lists_url, shared_wl_title, shared_list_empty, shared_list_bg }
   }
 }
 </script>

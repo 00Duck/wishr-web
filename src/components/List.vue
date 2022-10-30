@@ -5,13 +5,14 @@
         <div class="wl-content">
             <div>
                 <div class="wl-title">{{ item.Name }}</div>
-                <div class="wl-small">Created on {{ item.CreatedAt }}</div>
+                <div class="wl-small">Created on {{ new Date(item.CreatedAt).getUTCDate() }}</div>
             </div>
             <div>{{ item.ItemCount }} Items</div>
         </div>
     </router-link>
     <div v-if="list.length === 0 && list_err === null">
-        <div>You don't have any lists yet. Create a new list to get started!</div>
+        <div class="wl-empty-msg">{{ list_empty_msg }}</div>
+        <div :class="bg"></div>
     </div>
     <div v-if="list_err !== null">
         <div>{{ list_err }}</div>
@@ -23,8 +24,9 @@
     import { onMounted } from 'vue'
 
     export default {
-        props: ['title', 'list_url'],
+        props: ['title', 'list_url', 'list_empty_msg', 'bg'],
         setup(props) {
+            console.log(props.bg)
             const list = ref([])
             const list_err = ref(null)
 
@@ -47,7 +49,7 @@
 
 <style>
     .wl-list-title {
-        border-bottom: 1px solid rgba(150, 150, 150, 0.3);
+        /* border-bottom: 1px solid rgba(150, 150, 150, 0.3); */
         padding-bottom: 10px;
         margin-bottom: 25px;
         font-size: 30px;
@@ -77,5 +79,36 @@
         color: #aaa;
         font-size: 12px;
         font-style: italic;
+    }
+
+    .wl-empty-msg {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #777;
+    }
+
+    .wl-bg-clouds {
+        mask:url(@/assets/cloud-bg.svg);
+        mask-size:contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        display: flex;
+        align-self:center;
+        width: 100%;
+        height: 250px;
+        background: #ddd;
+        margin: auto;
+    }
+    .wl-bg-sad {
+        mask:url(@/assets/sad-bg.svg);
+        mask-size:contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        display: flex;
+        align-self:center;
+        width: 100%;
+        height: 230px;
+        background: #ddd;
+        margin: auto;
     }
 </style>
