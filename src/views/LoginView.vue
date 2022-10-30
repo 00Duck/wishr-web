@@ -1,7 +1,9 @@
 <template>
     <div id="main-content">
         <div class="wl-login-container">
-            <h2 class="theme-primary">Wishr</h2>
+            <h2 class="theme-primary">
+                <div class="wishr-logo wl-login-logo theme-primary-mask"></div>
+            </h2>
             <form @submit.prevent="login()">
                 <div class="wishr-field">
                     <label class="">User Name</label>
@@ -94,5 +96,10 @@ export default {
 .wl-register {
     margin: 20px auto 0 auto;
     justify-content: center;
+}
+
+.wl-login-logo {
+    height: 55px;
+    width: 55px;
 }
 </style>

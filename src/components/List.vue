@@ -5,7 +5,7 @@
         <div class="wl-content">
             <div>
                 <div class="wl-title">{{ item.Name }}</div>
-                <div class="wl-small">Created on {{ new Date(item.CreatedAt).getUTCDate() }}</div>
+                <div class="wl-small">Last updated on {{ new Date(item.UpdatedAt).toDateString() }}</div>
             </div>
             <div>{{ item.ItemCount }} Items</div>
         </div>
@@ -26,7 +26,6 @@
     export default {
         props: ['title', 'list_url', 'list_empty_msg', 'bg'],
         setup(props) {
-            console.log(props.bg)
             const list = ref([])
             const list_err = ref(null)
 

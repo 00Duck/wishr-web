@@ -17,7 +17,7 @@
                 <div>
                     <div class="wl-pill">Price: <b>{{ item.Price }}</b></div>
                     <div class="wl-pill">Quantity: <b>{{ item.Quantity }}</b></div>
-                    <div class="wl-get-item theme-primary-bg">Get this item</div>
+                    <div class="wl-get-item theme-primary-bg" disabled>Reserve</div>
                 </div>
             </div>
         </div>

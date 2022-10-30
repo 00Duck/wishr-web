@@ -6,6 +6,10 @@
     background-color: #0059e3;
 }
 
+.theme-primary-mask {
+    background: #0059e3;
+}
+
 .theme-secondary {
     color: #7487a2;
 }
@@ -89,4 +93,17 @@ body {
 }
 .wishr-icon-link:hover {
     text-decoration: underline;
+}
+
+.wishr-logo {
+    mask:url(@/assets/wishr-logo.svg);
+    mask-size: cover;
+    display: inline-block;
+}
+
+button:disabled, button[disabled],
+div:disabled, div[disabled] {
+    background-color: #ccc;
+    color: #777;
+    cursor:not-allowed;
 }

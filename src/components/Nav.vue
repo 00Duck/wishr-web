@@ -1,16 +1,22 @@
 <template>
     <div class="wl-nav">
-        <h3><div class="wishr-logo"></div><div>Wishr</div></h3>
+        <h3><div class="wishr-logo wl-nav-logo"></div><div>Wishr</div></h3>
         <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
-        <router-link :to="{'name': 'wl-create'}" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
+        <router-link :to="{'name': 'wl-create'}" :key="route.fullPath" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
         <router-link :to="{'name': 'profile'}" class="wl-link"><i class="iconoir-profile-circled"></i>My Profile</router-link>
         <router-link :to="{'name': 'about'}" class="wl-link"><i class="iconoir-question-mark-circle"></i>About</router-link>
     </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
+
     export default {
-        
+        setup() {
+            const route = useRoute()
+
+            return { route }
+        }
     }
 </script>
 
@@ -50,11 +56,7 @@
         flex-direction: row;
         align-items: center;
     }
-
-    .wishr-logo {
-        mask:url(@/assets/wishr-logo.svg);
-        mask-size: cover;
-        display: inline-block;
+    .wl-nav-logo {
         height: 30px;
         width: 30px;
         background: white;
