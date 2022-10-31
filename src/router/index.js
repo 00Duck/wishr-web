@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
 import axios from 'axios'
 
 const routes = [
@@ -50,7 +49,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: LoginView
+    component: () => import(/* webpackChungName: "notfound" */ '../views/NotFoundView.vue')
   }
 ]
 
