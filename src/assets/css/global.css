@@ -78,6 +78,10 @@ body {
     color: #666;
     width: 100%;
 }
+.form-error {
+    color: red;
+    font-size: 0.8em;
+}
 
 /* A link "button", meant to be a secondary button design. Color it with theme-primary */
 .wishr-icon-link {
@@ -106,4 +110,11 @@ div:disabled, div[disabled] {
     background-color: #ccc;
     color: #777;
     cursor:not-allowed;
+}
+
+.required:before {
+    content: "* ";
+    color: red;
+    font-size: 18px;
+    vertical-align: middle;
 }

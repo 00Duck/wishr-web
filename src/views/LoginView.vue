@@ -15,8 +15,8 @@
                     <input type="password" v-model="loginModel.Password" />
                 </div>
                 <div class="wl-login-msg theme-delete" v-if="showMessage()">{{ resp.Message }}</div>
-                <button class="theme-primary-bg wl-login-btn wishr-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
-                <div class="theme-primary wishr-icon-link wl-register"><i class="iconoir-add-database-script"></i><span>Register</span></div>
+                <button type="submit" class="theme-primary-bg wl-login-btn wishr-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
+                <div @click="register()" class="theme-primary wishr-icon-link wl-register"><i class="iconoir-add-database-script"></i><span>Register</span></div>
             </form>
         
         </div>
@@ -64,7 +64,11 @@ export default {
             return resp.value.Message != '';
         }
 
-        return { loginModel, login, showMessage, resp }
+        function register() {
+            router.push({name: "register"})
+        }
+
+        return { loginModel, login, showMessage, resp, register }
     }
 }
 </script>
@@ -74,7 +78,7 @@ export default {
     padding: 40px;
     border-radius: 10px;
     color: #777;
-    margin: 20vh auto 0 auto;
+    margin: 10vh auto 0 auto;
     width: 40%;
 }
 
