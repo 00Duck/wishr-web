@@ -8,7 +8,7 @@
                 <input type="text" required v-model="list.Name">
             </div>
             <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(list, item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
                 <div class="wl-field flex-100">
                     <label class="theme-primary">Item Name</label>
                     <input type="text" required v-model="item.Name" placeholder="Name">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </form>
-        <button class="wishr-btn theme-primary-bg" @click.prevent="createListItem(list)"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+        <button class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
     </div>
 </template>
 
@@ -44,23 +44,6 @@ import Nav from '@/components/Nav.vue'
 
 export default {
     components: { WLEditBar, Nav },
-    methods: {
-        createListItem: (list) => {
-            list.Items.push({
-                WishList: "",
-                Name: "",
-                URL: "",
-                Notes: "",
-                Price: "",
-                Quantity: 1,
-            })
-        },
-        deleteListItem(list, del_item) {
-            list.Items = list.Items.filter((item) => {
-                return item != del_item
-            })
-        }
-    },
     setup() {
         const route = useRoute()
         const list = ref({
@@ -88,9 +71,26 @@ export default {
                     list_err.value = err.message
                 }
             }
-            
         })
-        return { list, list_err }
+
+        function createListItem() {
+            list.value.Items.push({
+                WishList: "",
+                Name: "",
+                URL: "",
+                Notes: "",
+                Price: "",
+                Quantity: 1,
+            })
+        }
+
+        function deleteListItem(del_item) {
+            list.value.Items = list.value.Items.filter((item) => {
+                return item != del_item
+            })
+        }
+
+        return { list, list_err, createListItem, deleteListItem }
     }
 }
 </script>

@@ -1,8 +1,9 @@
 <template>
+    <ShareModal v-if="share_modal_open" @closeModal="toggleModal(false)"></ShareModal>
     <Nav></Nav>
     <div id="main-content">
         <div class="wl-container">
-            <WLActionBar :id="list.ID"></WLActionBar>
+            <WLActionBar :id="list.ID" @openModal="toggleModal(true)"></WLActionBar>
             <h1 class="wl-center">{{ list.Name }}</h1>
             <p class="wl-center">Created on {{ new Date(list.CreatedAt).toDateString() }}</p>
             <br />
@@ -30,9 +31,10 @@ import WLActionBar from '@/components/WLActionBar.vue'
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import Nav from '@/components/Nav.vue'
+import ShareModal from '@/components/ShareModal.vue'
 
 export default {
-    components: { WLActionBar, Nav },
+    components: { WLActionBar, Nav, ShareModal },
     methods: {
         snipURL: (url) => {
             if (url.length > 50) {
@@ -41,11 +43,12 @@ export default {
             return url
         },
     },
-    setup() {
+    setup(props, context) {
         const route = useRoute()
         const list = ref({})
         const list_id = ref(route.params.id)
         const list_err = ref(null)
+        const share_modal_open = ref(false)
 
         onMounted(async () => {
             try {
@@ -59,7 +62,11 @@ export default {
                 list_err.value = err.message
             }
         })
-        return { list, list_err }
+        function toggleModal(state) {
+            share_modal_open.value = state
+        }
+
+        return { list, list_err, share_modal_open, toggleModal }
     }
 }
 </script>
