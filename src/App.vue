@@ -1,11 +1,12 @@
 <template>
+  <AppNotification></AppNotification>
   <router-view/>
 </template>
 
 <script>
-
+import AppNotification from '@/components/AppNotification.vue';
 export default {
-  components: {  },
+    components: { AppNotification }
 }
 </script>
 

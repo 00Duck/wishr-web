@@ -37,6 +37,7 @@
     </div>
 </template>
 <script>
+import { EventBus } from '@/event-bus';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -72,6 +73,10 @@ export default {
                         validation.value.ServerErr = data.Message
                         return
                     }
+                    EventBus.emit('notify', {
+                        type: 'info',
+                        text: 'You have successfully registered! Please sign in.'
+                    })
                     router.push({name: 'login'})
                 })
                 .catch(err => {
