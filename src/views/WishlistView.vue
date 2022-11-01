@@ -2,23 +2,28 @@
     <ShareModal :list_id="list_id" v-if="share_modal_open" @closeModal="toggleModal(false)"></ShareModal>
     <Nav></Nav>
     <div id="main-content">
-        <div v-if="!list" class="wl-container wl-no-list-container">
+        <div v-if="loading" class="wishr-loading" style="margin-top:10vh"></div>
+        <div v-else-if="!list" class="wl-container wl-no-list-container">
             <h1>Uh oh!</h1>
             <div class="wl-no-list-bg"></div>
             <p>The list you are trying to view either does not exist or is no longer shared with you.</p>
             <div class="wishr-btn theme-primary-bg wl-no-list-btn" @click="router.push({name: 'home'})"><i class="iconoir-home-simple-door"></i><span>Back to safety</span></div>
         </div>
         <div v-else class="wl-container">
-            <WLActionBar :id="list.ID" :can_edit="list.CanEdit" @openModal="toggleModal(true)"></WLActionBar>
+            <WLActionBar :id="list.ID" :can_edit="list.IsOwner" @openModal="toggleModal(true)"></WLActionBar>
             <h1 class="wl-center">{{ list.Name }}</h1>
-            <p class="wl-center">Created on {{ new Date(list.CreatedAt).toDateString() }}</p>
+            <div class="wl-list-info wl-center">
+                <span v-if="!list.IsOwner">Created by {{ list.OwnerFullName }} on {{ new Date(list.CreatedAt).toDateString() }}</span>
+                <span><b>Last Updated</b> {{ new Date(list.UpdatedAt).toDateString()}}</span>
+            </div>
             <br />
-            <div v-for="item in list.Items" :key="item.ID" class="wl-detail-line">
+            <div v-for="item in list.Items" :key="item.ID" class="wl-detail-line" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
                 <ul>
                     <li>
                         <div class="wl-detail-title">{{ item.Name }}</div>
-                        <div class="wl-url">URL: <a :href="item.URL" target="_blank">{{ snipURL(item.URL) }}</a></div>
+                        <div class="wl-url"><a :href="getURL(item.URL)" rel="noreferrer" target="_blank">{{ snipURL(item.URL) }}</a></div>
                         <div class="wl-detail-notes">{{ item.Notes }}</div>
+                        <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
                     </li>
                 </ul>
                 <div>
@@ -42,15 +47,8 @@ import axios from 'axios';
 
 export default {
     components: { WLActionBar, Nav, ShareModal },
-    methods: {
-        snipURL: (url) => {
-            if (url.length > 50) {
-                return url.substring(0, 50) + '...'
-            }
-            return url
-        },
-    },
     setup(props, context) {
+        const loading = ref(true)
         const route = useRoute()
         const router = useRouter()
         const list = ref(null)
@@ -66,12 +64,31 @@ export default {
             .catch(err => {
                 list_err.value = err.message
             })
+            .finally(() => {
+                loading.value = false
+            })
         })
         function toggleModal(state) {
             share_modal_open.value = state
         }
 
-        return { list, list_err, share_modal_open, toggleModal, list_id, router }
+        function getURL(url) {
+            if (!url || url == '') { return '' }
+            if (url.indexOf('/') === 0) { url = url.substring(1, url.length)}
+            if (url.indexOf('http') !== 0) {
+                url = 'https://' + url
+            }
+            return url
+        }
+
+        function snipURL(url) {
+            if (url.length > 50) {
+                return url.substring(0, 50) + '...'
+            }
+            return url
+        }
+
+        return { list, list_err, share_modal_open, toggleModal, list_id, router, loading, getURL, snipURL }
     }
 }
 </script>
@@ -102,6 +119,12 @@ export default {
     margin-bottom: -5px;
     text-indent: 125px;
 
+}
+
+.wl-list-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .wl-detail-notes {
@@ -150,5 +173,16 @@ export default {
     height: 220px;
     background: #eee;
     margin-top: 20px;
+}
+
+.wl-item-hidden {
+    color: tomato;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.wl-item-hidden i {
+    font-size: 22px;
 }
 </style>

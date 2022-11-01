@@ -1,14 +1,15 @@
 <template>
     <Nav></Nav>
     <div id="main-content">
-        <form>
+        <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
+        <form v-else>
             <div class="wl-container wl-form">
                 <WLEditBar :list="list"></WLEditBar>
                 <label class="theme-primary">Wishlist Name</label>
                 <input type="text" required v-model="list.Name">
             </div>
             <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button v-if="list.CanEdit" class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+                <div class="wl-field flex-100"><div class="wl-btn-space"></div><div v-if="list.IsOwner" class="wishr-icon-link theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></div></div>
                 <div class="wl-field flex-100">
                     <label class="theme-primary">Item Name</label>
                     <input type="text" required v-model="item.Name" placeholder="Name">
@@ -29,9 +30,13 @@
                     <label class="theme-primary">Quantity</label>
                     <input type="text" required v-model="item.Quantity" placeholder="Quantity">
                 </div>
+                <div class="wl-field flex-50">
+                    <label class="theme-primary tooltip"><i class="iconoir-question-mark-circle wl-info-icon" title="Select to hide this item from others."></i>Personal Item</label>
+                    <input type="checkbox" v-model="item.PersonalItem" style="width:15px;">
+                </div>
             </div>
+            <button type="button" v-if="list.IsOwner" class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
         </form>
-        <button v-if="list.CanEdit" class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
     </div>
 </template>
 
@@ -52,9 +57,12 @@ export default {
             ItemCount: 0,
             Items: [],
             Owner: "",
+            PersonalItem: false,
+            IsOwner: true
         })
         const list_id = ref(route.params.id)
         const list_err = ref(null)
+        const loading = ref(true)
 
         onMounted(async () => {
             //If there's no ID, we're in "create mode". Else we're in edit mode
@@ -69,7 +77,11 @@ export default {
                     list.value = data.Data
                 } catch (err) {
                     list_err.value = err.message
+                } finally {
+                    loading.value = false
                 }
+            } else {
+                loading.value = false
             }
         })
 
@@ -81,6 +93,7 @@ export default {
                 Notes: "",
                 Price: "",
                 Quantity: 1,
+                PersonalItem: false
             })
         }
 
@@ -90,7 +103,7 @@ export default {
             })
         }
 
-        return { list, list_err, createListItem, deleteListItem }
+        return { list, list_err, createListItem, deleteListItem, loading }
     }
 }
 </script>
@@ -131,6 +144,7 @@ export default {
     flex-direction: row;
     margin-bottom: 5px;
 }
+
 .wl-delete-btn {
     background-color: transparent;
     border: 0;
@@ -166,10 +180,15 @@ export default {
     flex: 48%;
 }
 
-.wl-field i { /* Mostly for delete button icon */
+.wl-field i {
     display: inline-block;
     font-size: 18px;
     margin-right: 5px;
+}
+
+.wl-info-icon {
+    font-size: 14px!important;
+    cursor: pointer;
 }
 
 </style>

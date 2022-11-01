@@ -1,22 +1,27 @@
 <template>
     <h2 class="wl-list-title">{{ title }}</h2>
-    <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="wl-list-item wl-container" v-for="item in list" :key="item.ID" v-if="list.length > 0">
-        <div class="wl-icon theme-primary"><i class="iconoir-bookmark-book"></i></div>
-        <div class="wl-content">
-            <div>
-                <div class="wl-title">{{ item.Name }}</div>
-                <div class="wl-small">Last updated on {{ new Date(item.UpdatedAt).toDateString() }}</div>
+    <div v-if="loading" class="wishr-loading"></div>
+    <div v-else>
+        <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="wl-list-item wl-container" v-for="item in list" :key="item.ID" v-if="list.length > 0">
+            <div class="wl-icon theme-primary"><i class="iconoir-bookmark-book"></i></div>
+            <div class="wl-content">
+                <div>
+                    <div class="wl-title">{{ item.Name }}</div>
+                    <div class="wl-small" v-if="!item.IsOwner">Shared by <b>{{ item.OwnerFullName }}</b></div>
+                    <div class="wl-small">Last updated on {{ new Date(item.UpdatedAt).toDateString() }}</div>
+                </div>
+                <div>{{ item.ItemCount }} Items</div>
             </div>
-            <div>{{ item.ItemCount }} Items</div>
+        </router-link>
+        <div v-if="list.length === 0 && list_err === null">
+            <div :class="bg"></div>
+            <div class="wl-empty-msg">{{ list_empty_msg }}</div>
         </div>
-    </router-link>
-    <div v-if="list.length === 0 && list_err === null">
-        <div class="wl-empty-msg">{{ list_empty_msg }}</div>
-        <div :class="bg"></div>
+        <div v-if="list_err !== null">
+            <div>{{ list_err }}</div>
+        </div>
     </div>
-    <div v-if="list_err !== null">
-        <div>{{ list_err }}</div>
-    </div>
+    
 </template>
 
 <script>
@@ -28,6 +33,7 @@
         setup(props) {
             const list = ref([])
             const list_err = ref(null)
+            const loading = ref(true)
 
             onMounted(async () => {
                 try {
@@ -39,9 +45,11 @@
                     list.value = data.Data
                 } catch(err) {
                     list_err.value = err.message
+                } finally {
+                    loading.value = false
                 }
             })
-            return { list, list_err }
+            return { list, list_err, loading }
         }
     }
 </script>
@@ -83,6 +91,7 @@
     .wl-empty-msg {
         text-align: center;
         margin-bottom: 20px;
+        margin-top: 40px;
         color: #777;
     }
 

@@ -2,7 +2,7 @@
     <div class="wl-nav">
         <h3><div class="wishr-logo wl-nav-logo"></div><div>Wishr</div></h3>
         <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
-        <router-link :to="{'name': 'wl-create'}" :key="route.fullPath" class="wl-link"><i class="iconoir-open-book"></i>Create Wishlist</router-link>
+        <router-link :to="{'name': 'wl-create'}" :key="route.fullPath" class="wl-link"><i class="iconoir-add-database-script"></i>Create Wishlist</router-link>
         <router-link :to="{'name': 'profile'}" class="wl-link"><i class="iconoir-profile-circled"></i>My Profile</router-link>
         <router-link :to="{'name': 'about'}" class="wl-link"><i class="iconoir-question-mark-circle"></i>About</router-link>
     </div>
