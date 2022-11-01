@@ -48,6 +48,7 @@ export default {
                 if (!resp.value.Message || resp.value.Message !== 'success') {
                     resp.value = {Message: 'There was a problem attempting to log you in. Please try again later.'}
                 } else {
+                    localStorage.setItem('user', JSON.stringify(resp.value.Data))
                     router.push({name: "home"})
                 }                
             })

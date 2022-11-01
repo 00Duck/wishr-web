@@ -29,7 +29,11 @@
                 <div>
                     <div class="wl-pill">Price: <b>{{ item.Price }}</b></div>
                     <div class="wl-pill">Quantity: <b>{{ item.Quantity }}</b></div>
-                    <div class="wl-get-item theme-primary-bg" disabled>Reserve</div>
+                    <div v-if="list.Owner !== current_user.ID">
+                        <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="wishr-btn wl-get-item theme-primary-bg"><i class="iconoir-gift"></i><span>Reserve</span></button>
+                        <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="wishr-btn wl-get-item theme-delete-bg"><i class="iconoir-remove-from-cart"></i><span>Remove Reservation</span></button>
+                        <div v-else class="wl-reserve-notify"><i class="iconoir-info-empty"></i><span><b>{{ item.ReservedByFullName }}</b> is getting this item</span></div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -44,6 +48,7 @@ import { onMounted } from 'vue';
 import Nav from '@/components/Nav.vue'
 import ShareModal from '@/components/ShareModal.vue'
 import axios from 'axios';
+import { EventBus } from '@/event-bus';
 
 export default {
     components: { WLActionBar, Nav, ShareModal },
@@ -55,8 +60,13 @@ export default {
         const list_id = ref(route.params.id)
         const list_err = ref(null)
         const share_modal_open = ref(false)
+        const current_user = ref(getCurrentUser())
 
         onMounted(async () => {
+            refresh()
+        })
+
+        async function refresh() {
             await axios.get('/api/prot/wishlist/' + list_id.value)
             .then(response => {
                 list.value = response.data.Data
@@ -67,7 +77,8 @@ export default {
             .finally(() => {
                 loading.value = false
             })
-        })
+        }
+
         function toggleModal(state) {
             share_modal_open.value = state
         }
@@ -88,7 +99,43 @@ export default {
             return url
         }
 
-        return { list, list_err, share_modal_open, toggleModal, list_id, router, loading, getURL, snipURL }
+        function getCurrentUser() {
+            try {
+                let user = localStorage.getItem('user')
+                return JSON.parse(user)
+            } catch (e) {
+                return {'ID': '', 'UserName': '', 'FullName': ''}
+            }
+        }
+
+        async function reserveItem(item) {
+            await axios.post('/api/prot/wishlist_item/reserve', item)
+            .then(response => {
+                if (response.data.Message != 'success') {
+                    EventBus.emit('notify', {
+                        type: 'error',
+                        text: response.data.Message,
+                    })
+                }
+                refresh()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        async function unreserveItem(item) {
+            await axios.post('/api/prot/wishlist_item/unreserve', item)
+            .then(response => {
+                refresh()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        return { list, list_err, share_modal_open, toggleModal, list_id, router, loading,
+            getURL, snipURL, current_user, reserveItem, unreserveItem }
     }
 }
 </script>
@@ -136,14 +183,12 @@ export default {
     display: block;
     white-space: nowrap;
     font-size: 16px;
+    text-align: end;
 }
 
 .wl-get-item {
-    color: white;
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
+    padding: 5px 10px;
 }
 
 .wl-no-list-container {
@@ -184,5 +229,20 @@ export default {
 }
 .wl-item-hidden i {
     font-size: 22px;
+}
+
+.wl-reserve-notify {
+    padding: 5px 10px;
+    background-color: #eee;
+    color: #888;
+    border-radius: 10px;
+    cursor: not-allowed;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+.wl-reserve-notify i {
+    font-size: 22px;   
 }
 </style>

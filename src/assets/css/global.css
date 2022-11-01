@@ -81,7 +81,7 @@ body {
 }
 
 .form-error {
-    color: red;
+    color: #e40004;
     font-size: 0.8em;
 }
 
@@ -139,7 +139,7 @@ div[disabled] {
 
 .required:before {
     content: "* ";
-    color: red;
+    color: #e40004;
     font-size: 18px;
     vertical-align: middle;
 }
