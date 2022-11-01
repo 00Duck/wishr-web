@@ -5,59 +5,107 @@
             <p>Search for friends and family members below. Everyone shown here will be able to view this list!</p>
             <br>
             <div class="wl-share-bar">
-                <div>This list is currently shared with:</div>
-                <div class="wl-share-users">
-                    <div v-for="item in sharedUsers" :key="item.userID" @click="removeSharedUser(item)">
-                        <span class="wl-share-user-avatar"></span><span>{{ item.FullName }}</span><span class="wl-share-remove-user"><i class="iconoir-cancel"></i></span>
+                <div v-if="sharedUsers.length == 0">
+                    This list is not currently shared.
+                </div>
+                <div v-else>
+                    <div>This list is shared with:</div>
+                    <div class="wl-share-users">
+                        <div v-for="item in sharedUsers" :key="item.userID">
+                            <span class="wl-share-user-avatar"></span><span>{{ item.FullName }}</span><span @click="removeSharedUser(item)" class="wl-share-remove-user"><i class="iconoir-cancel"></i></span>
+                        </div>
                     </div>
                 </div>
                 
             </div>
             <div class="wishr-field">
                 <label>Add Person</label>
-                <input type="text" placeholder="Start typing to search" />
+                <input type="text" placeholder="Start typing to search" v-model="search" @input="filterResults()" />
+                <ul v-if="search != ''" class="wl-autocomplete-results">
+                    <li class="wl-autocomplete-result" @click="addSharedUser(item)" v-for="item in results" :key="item.UserID">{{ item.FullName }}</li>
+                </ul>
             </div>
             <div class="wl-shared-btn-group">
                 <div class="wishr-btn theme-secondary-bg wl-share-btn" @click="closeModal()">Cancel</div>
-                <div class="wishr-btn theme-primary-bg wl-share-btn">Save</div>
+                <div class="wishr-btn theme-primary-bg wl-share-btn" @click="sendSharedUsers()">Save</div>
             </div>
         </div>
     </div>
     
 </template>
 <script>
-import { ref } from 'vue'
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
 
 export default {
+    props: ['list_id'],
     setup(props, context) {
-        const sharedUsers = ref([{
-            "UserID":"1234",
-            "UserName": "bob",
-            "FullName": "Steve Barley"
-        },
-        {
-            "UserID":"1234",
-            "UserName": "bob",
-            "FullName": "Bob Barley"
-        },
-        {
-            "UserID":"1234",
-            "UserName": "bob",
-            "FullName": "Jim Barley"
-        }])
+        const search = ref('')
+        const sharedUsers = ref([])
+        const selectableUsers = ref([])
+        const results = ref([])
+
+        onMounted( async () => {
+            //get selectable users
+            await axios.get('/api/prot/user/shared/selectable/' + props.list_id)
+            .then(response => {
+                selectableUsers.value = response.data.Data
+            })
+            .catch(err => {
+                selectableUsers.value = []
+                console.log(err)
+            })
+            //get users who have already been shared this list
+            await axios.get('/api/prot/user/shared/' + props.list_id)
+            .then(response => {
+                sharedUsers.value = response.data.Data
+            })
+            .catch(err => {
+                sharedUsers.value = []
+                console.log(err)
+            })
+        })
+        
         const closeModal = (event) => {
             context.emit("closeModal")
         }
-        function addSharedUser(user) {
-            sharedUsers.value.push(user)
+        function addSharedUser(sel_user) {
+            sharedUsers.value.push(sel_user)
+            selectableUsers.value = selectableUsers.value.filter(user => {
+                return user !== sel_user
+            })
+            results.value = results.value.filter(user => {
+                return user !== sel_user
+            })
+            search.value = ''
         }
         function removeSharedUser(del_user) {
+            selectableUsers.value.push(del_user)
+            results.value.push(del_user)
             sharedUsers.value = sharedUsers.value.filter(user => {
                 return user !== del_user
             })
         }
 
-        return { closeModal, sharedUsers, addSharedUser, removeSharedUser }
+        function filterResults() {
+            results.value = selectableUsers.value.filter(user => {
+                return user.FullName.toLowerCase().indexOf(search.value.toLowerCase()) > -1
+            })
+        }
+
+        function sendSharedUsers() {
+            console.log(sharedUsers.value)
+            axios.post('/api/prot/user/shared/' + props.list_id, sharedUsers.value)
+            .then(response => {
+                closeModal()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        return { search, sharedUsers, results, closeModal, addSharedUser,
+            removeSharedUser, filterResults, sendSharedUsers }
     }
 }
 </script>
@@ -79,13 +127,13 @@ export default {
         display: flex;
         flex-direction: column;
         gap: 15px;
+        margin-bottom: 25px;
     }
     .wl-share-users {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 25px;
     }
     .wl-share-users div {
         background-color: #eee;
@@ -113,5 +161,24 @@ export default {
         background-size: cover;
         background-repeat: no-repeat;
         height: 22px;
+    }
+
+    .wl-autocomplete-results {
+        padding: 0;
+        margin: 0;
+        border: 1px solid #eee;
+        height: 120px;
+        overflow: auto;
+    }
+
+    .wl-autocomplete-result {
+        list-style: none;
+        text-align: left;
+        padding: 4px 2px;
+        cursor: pointer;
+    }
+    .wl-autocomplete-result.is-active, .wl-autocomplete-result:hover {
+        background-color: #0059e3;
+        color: white;
     }
 </style>

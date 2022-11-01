@@ -2,8 +2,8 @@
     <div class="wl-action-bar">
         <div class="wl-action-item theme-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</div>
         <div class="wl-space"></div>
-        <div class="wl-action-item theme-primary" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</div>
-        <div class="wl-action-item theme-primary" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</div>
+        <div v-if="can_edit" class="wl-action-item theme-primary" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</div>
+        <div v-if="can_edit" class="wl-action-item theme-primary" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</div>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
 import { useRouter } from 'vue-router';
 
     export default {
-        props: ['id'],
+        props: ['id', 'can_edit'],
         setup(props) {
             const router = useRouter()
             

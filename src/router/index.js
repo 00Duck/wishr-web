@@ -59,8 +59,12 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+  const bypass = ['login', 'register', 'NotFound']
+  if (bypass.indexOf(to.name) !== -1) {
+    return
+  }
   const isAuthenticated = await checkAuthenticated()
-  if (!isAuthenticated && to.name !== 'login') {
+  if (!isAuthenticated) {
     return { name: 'login' }
   }
 })

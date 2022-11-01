@@ -39,9 +39,11 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
+        const router = useRouter()
         const form = ref({
             "UserName": "",
             "Password": "",
@@ -70,10 +72,10 @@ export default {
                         validation.value.ServerErr = data.Message
                         return
                     }
-                    console.log('success, navigate login')
+                    router.push({name: 'login'})
                 })
                 .catch(err => {
-                    console.log('Error:', err)
+                    console.log(err)
                 })
             }
         }

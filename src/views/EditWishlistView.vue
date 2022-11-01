@@ -8,7 +8,7 @@
                 <input type="text" required v-model="list.Name">
             </div>
             <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
+                <div class="wl-field flex-100"><div class="wl-btn-space"></div><button v-if="list.CanEdit" class="wl-delete-btn theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></button></div>
                 <div class="wl-field flex-100">
                     <label class="theme-primary">Item Name</label>
                     <input type="text" required v-model="item.Name" placeholder="Name">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </form>
-        <button class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+        <button v-if="list.CanEdit" class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
     </div>
 </template>
 

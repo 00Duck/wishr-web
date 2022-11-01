@@ -2,8 +2,8 @@
     <div class="wl-edit-bar">
         <div class="wl-edit-item theme-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</div>
         <div class="wl-space"></div>
-        <div v-show="list.ID && list.ID != ''" class="wl-edit-item theme-delete" @click="deleteList()"><i class="iconoir-remove-database-script"></i>Delete List</div>
-        <div class="wl-edit-item theme-primary" @click="saveList()"><i class="iconoir-save-floppy-disk"></i>Save List</div>
+        <div v-if="list.ID && list.ID != '' && list.CanEdit" class="wl-edit-item theme-delete" @click="deleteList()"><i class="iconoir-remove-database-script"></i>Delete List</div>
+        <div v-if="list.CanEdit || list.ID == ''" class="wl-edit-item theme-primary" @click="saveList()"><i class="iconoir-save-floppy-disk"></i>Save List</div>
     </div>
 </template>
 

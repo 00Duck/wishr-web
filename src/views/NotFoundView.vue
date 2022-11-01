@@ -2,9 +2,9 @@
     <div id="main-content">
         <div class="wl-not-found-container">
             <h1>404 Not Found</h1>
+            <div class="wl-not-found-bg"></div>
             <p>Whatever you were trying to do didn't work.</p>
             <div class="wishr-btn theme-primary-bg wl-not-found-btn" @click="router.push({name: 'home'})"><i class="iconoir-home-simple-door"></i><span>Go back home</span></div>
-            <div class="wl-not-found-bg"></div>
         </div>
     </div>
 </template>
