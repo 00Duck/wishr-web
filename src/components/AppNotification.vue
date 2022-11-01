@@ -25,7 +25,7 @@ export default {
 
                 setTimeout(() => {
                     close()
-                }, 8000)
+                }, 5000)
             })
         })
 
@@ -44,7 +44,7 @@ export default {
 <style>
     .wishr-msg {
         position: fixed;
-        width: 95%;
+        width: 80%;
         z-index: 3;
         padding: 6px 9px;
         display: flex;
@@ -65,7 +65,7 @@ export default {
 
     .wishr-msg-info {
         border: 1px solid rgb(51, 139, 255);
-        background-color: rgb(172, 207, 253, 0.87);
+        background-color: rgb(172, 207, 253);
         color: rgb(0, 110, 255);
     }
     .wishr-msg-error {

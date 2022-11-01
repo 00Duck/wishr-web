@@ -34,6 +34,7 @@
     
 </template>
 <script>
+import { EventBus } from '@/event-bus'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
@@ -97,6 +98,10 @@ export default {
             console.log(sharedUsers.value)
             axios.post('/api/prot/user/shared/' + props.list_id, sharedUsers.value)
             .then(response => {
+                EventBus.emit('notify', {
+                    type: 'info',
+                    text: 'Wishlist share settings updated.'
+                })
                 closeModal()
             })
             .catch(err => {

@@ -8,38 +8,47 @@
 </template>
 
 <script>
-    import { useRouter } from 'vue-router';
-    import axios from 'axios';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { EventBus } from '@/event-bus';
 
-    export default {
-        props: ['list'],
-        setup(props) {
-            const router = useRouter()
-            async function saveList() {
-                props.list.ItemCount = props.list.Items.length
-                await axios.post('/api/prot/wishlist', props.list)
+export default {
+    props: ['list'],
+    setup(props) {
+        const router = useRouter()
+        async function saveList() {
+            props.list.ItemCount = props.list.Items.length
+            await axios.post('/api/prot/wishlist', props.list)
+            .then(response => {
+                EventBus.emit('notify', {
+                    type: 'info',
+                    text: 'Wishlist saved.'
+                })
+                router.push({name: "wl-detail", params:{id: response.data.Data}})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        async function deleteList() {
+            if (confirm("Are you sure you want to delete this list?")) {
+                await axios.delete('/api/prot/wishlist/' + props.list.ID)
                 .then(response => {
-                    router.push({name: "wl-detail", params:{id: response.data.Data}})
+                    EventBus.emit('notify', {
+                        type: 'info',
+                        text: 'Wishlist has been deleted.'
+                    })
+                    router.push({name: "home"})
                 })
                 .catch(err => {
                     console.log(err)
                 })
             }
-
-            async function deleteList() {
-                if (confirm("Are you sure you want to delete this list?")) {
-                    await axios.delete('/api/prot/wishlist/' + props.list.ID)
-                    .then(response => {
-                        router.push({name: "home"})
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                }
-            }
-            return { router, saveList, deleteList }
         }
+        return { router, saveList, deleteList }
     }
+}
 </script>
 
 <style>
