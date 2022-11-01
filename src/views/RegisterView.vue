@@ -7,17 +7,17 @@
                 <div class="form-error" style="text-align: center;" v-if="validation.ServerErr">{{ validation.ServerErr }}</div>
                 <div class="wishr-field">
                     <label class="required">User Name</label>
-                    <input type="text" v-model="form.UserName" />
+                    <input type="text" v-model="form.UserName" placeholder="This will be the name you use to log in" />
                     <div class="form-error" v-if="validation.UserNameErr">{{ validation.UserNameErr }}</div>
                 </div>
                 <div class="wishr-field">
-                    <label class="required">Full Name</label>
-                    <input type="text" v-model="form.FullName" />
+                    <label class="required">Full Name or Alias</label>
+                    <input type="text" v-model="form.FullName" placeholder="The name that other people will see you as" />
                     <div class="form-error" v-if="validation.FullNameErr">{{ validation.FullNameErr }}</div>
                 </div>
                 <div class="wishr-field">
                     <label class="required">Password</label>
-                    <input type="password" v-model="form.Password" />
+                    <input type="password" v-model="form.Password" placeholder="Minimum 8 characters" />
                     <div class="form-error" v-if="validation.PasswordErr">{{ validation.PasswordErr }}</div>
                 </div>
                 <div class="wishr-field">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="wishr-field">
                     <label class="required">Registration Code</label>
-                    <input type="text" v-model="form.RegistrationCode" />
+                    <input type="text" v-model="form.RegistrationCode" placeholder="Contact the site owner for your code" />
                     <div class="form-error" v-if="validation.RegistrationCodeErr">{{ validation.RegistrationCodeErr }}</div>
                 </div>
                 <br />
