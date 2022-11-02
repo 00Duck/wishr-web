@@ -65,12 +65,12 @@ export default {
 
     .wishr-msg-info {
         border: 1px solid rgb(51, 139, 255);
-        background-color: rgb(172, 207, 253);
+        background-color: rgb(196, 221, 254);
         color: rgb(0, 110, 255);
     }
     .wishr-msg-error {
         border: 1px solid red;
-        background-color: rgb(255, 194, 194);
+        background-color: rgb(252, 206, 206);
         color: red;
     }
 </style>

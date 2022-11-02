@@ -95,7 +95,7 @@
         color: #777;
     }
 
-    .wl-bg-clouds {
+    .wl-bg-my-wishlist {
         mask:url(@/assets/cloud-bg.svg);
         mask-size:contain;
         mask-repeat: no-repeat;

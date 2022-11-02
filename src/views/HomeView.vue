@@ -21,7 +21,7 @@ export default {
     const my_lists_url = ref('/api/prot/wishlist')
     const my_wl_title = ref("My Wishlists")
     const my_list_empty = ref("You don't have any lists yet. Create a new list to get started!")
-    const my_list_bg = ref('wl-bg-clouds')
+    const my_list_bg = ref('wl-bg-my-wishlist')
 
     const shared_lists_url = ref('/api/prot/wishlist/shared')
     const shared_wl_title = ref("Shared with me")

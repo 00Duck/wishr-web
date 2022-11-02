@@ -21,12 +21,12 @@ const routes = [
   {
     path: '/wishlist/create',
     name: 'wl-create',
-    component: () => import(/* webpackChunkName: "about" */ '../views/EditWishlistView.vue')
+    component: () => import(/* webpackChunkName: "wl-create" */ '../views/CreateWishlistView.vue')
   },
   {
     path: '/wishlist/edit/:id?',
     name: 'wl-edit',
-    component: () => import(/* webpackChunkName: "edit" */ '../views/EditWishlistView.vue')
+    component: () => import(/* webpackChunkName: "wl-edit" */ '../views/EditWishlistView.vue')
   },
   {
     path: '/wishlist/:id',
