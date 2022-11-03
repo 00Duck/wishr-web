@@ -158,7 +158,7 @@ export default {
 }
 
 .wl-detail-title {
-    font-size: 28px;
+    font-size: 22px;
 }
 
 .wl-detail-title i {
