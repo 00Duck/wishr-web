@@ -14,7 +14,7 @@
                     <label class="">Password</label>
                     <input type="password" v-model="loginModel.Password" />
                 </div>
-                <div class="wl-login-msg theme-delete" v-if="showMessage()">{{ resp.Message }}</div>
+                <div v-if="loading" class="wishr-loading" style="height: 50px;"></div>
                 <button type="submit" class="theme-primary-bg wl-login-btn wishr-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
                 <div @click="register()" class="theme-primary wishr-icon-link wl-register"><i class="iconoir-add-database-script"></i><span>Register</span></div>
             </form>
@@ -26,6 +26,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { EventBus } from '@/event-bus';
 
 export default {
     setup() {
@@ -35,26 +36,40 @@ export default {
         })
         const resp = ref(null)
         const router = useRouter()
+        const loading = ref(false)
 
         async function login() {
             resp.value = null
             if (loginModel.value.UserName === '' || loginModel.value.Password === '') {
-                resp.value = {Message: 'You must enter a User Name and Password to log in.'}
+                EventBus.emit('notify', {
+                    type: 'error',
+                    text: 'You must enter a User Name and Password to log in.'
+                })
                 return
             }
+            loading.value = true
             await axios.post("/api/open/login", loginModel.value)
             .then((response) => {
                 resp.value = response.data
-                if (!resp.value.Message || resp.value.Message !== 'success') {
-                    resp.value = {Message: 'There was a problem attempting to log you in. Please try again later.'}
+                if (resp.value.Message !== 'success') {
+                    EventBus.emit('notify', {
+                        type: 'error',
+                        text: resp.value.Message
+                    })
                 } else {
                     localStorage.setItem('user', JSON.stringify(resp.value.Data))
                     router.push({name: "home"})
                 }                
             })
             .catch( (err) => {
-                resp.value = {Message: 'There was a problem attempting to log you in. Please try again later. Error: ' + err}
+                EventBus.emit('notify', {
+                    type: 'error',
+                    text: 'There was a problem attempting to log you in. Please try again later.'
+                })
                 console.log(err)
+            })
+            .finally(() => {
+                loading.value = false;
             })
         }
 
@@ -69,7 +84,7 @@ export default {
             router.push({name: "register"})
         }
 
-        return { loginModel, login, showMessage, resp, register }
+        return { loginModel, login, showMessage, resp, register, loading }
     }
 }
 </script>
@@ -91,11 +106,6 @@ export default {
 
 .wl-login-btn {
     margin-top: 50px;
-}
-
-.wl-login-msg {
-    font-style: italic;
-    font-size: 14px;
 }
 
 .wl-register {
