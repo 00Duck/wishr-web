@@ -20,12 +20,12 @@ export default {
   setup() {
     const my_lists_url = ref('/api/prot/wishlist')
     const my_wl_title = ref("My Wishlists")
-    const my_list_empty = ref("You don't have any lists yet. Create a new list to get started!")
+    const my_list_empty = ref("There's nothing to see here yet. Create a new list to get started!")
     const my_list_bg = ref('wl-bg-my-wishlist')
 
     const shared_lists_url = ref('/api/prot/wishlist/shared')
     const shared_wl_title = ref("Shared with me")
-    const shared_list_empty = ref("No one has shared anything with you yet.")
+    const shared_list_empty = ref("No one has shared anything with you.")
     const shared_list_bg = ref('wl-bg-sad')
 
     return { my_lists_url, my_wl_title, my_list_empty, my_list_bg,

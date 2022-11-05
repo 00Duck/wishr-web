@@ -61,7 +61,7 @@ import Nav from '@/components/Nav.vue'
     mask-size: contain;
     mask-repeat: no-repeat;
     display: inline-block;
-    height: 200px;
+    height: 350px;
     background: #eee;
     width: 100%;
     margin: 50px auto;

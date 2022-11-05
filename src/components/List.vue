@@ -92,7 +92,8 @@
         text-align: center;
         margin-bottom: 20px;
         margin-top: 40px;
-        color: #777;
+        color: #888;
+        font-size: 18px;
     }
 
     .wl-bg-my-wishlist {

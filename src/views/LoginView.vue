@@ -96,6 +96,7 @@ export default {
     color: #777;
     margin: 10vh auto 0 auto;
     width: 40%;
+    max-width: 500px;
 }
 
 .wl-login-container h2 {
