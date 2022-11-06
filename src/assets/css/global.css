@@ -36,6 +36,11 @@ body {
     height: 100%;
 }
 
+input:focus-visible {
+    outline: none!important;
+    border-bottom: 1px solid #0059e3!important;
+}
+
 .wl-container {
     background-color: white;
     padding: 20px;
