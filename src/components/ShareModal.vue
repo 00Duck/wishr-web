@@ -9,7 +9,7 @@
                     This list is not currently shared.
                 </div>
                 <div v-else>
-                    <div>This list is shared with:</div>
+                    <div>This list is shared with:</div><br>
                     <div class="wl-share-users">
                         <div v-for="item in sharedUsers" :key="item.userID">
                             <span class="wl-share-user-avatar"></span><span>{{ item.FullName }}</span><span @click="removeSharedUser(item)" class="wl-share-remove-user"><i class="iconoir-cancel"></i></span>
@@ -149,11 +149,16 @@ export default {
         padding: 1px 0px;
     }
 
+    .wl-share-users>div>span {
+        display: flex;
+        align-self: center;
+    }
+
     .wl-share-remove-user {
         border-radius: 12px;
         display: flex;
         align-items: center;
-        padding: 0 3px;
+        padding: 3px 3px;
     }
     .wl-share-remove-user:hover {
         background-color: #ccc;
