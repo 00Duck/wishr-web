@@ -9,6 +9,10 @@
             </div>
             <div v-else class="wl-profile-container">
                 <div class="wl-profile-avatar"></div>
+                <!-- <div class="wl-profile-avatar" @mouseenter="toggleOverlay(true)" @mouseleave="toggleOverlay(false)" @click="openFileUpload()">
+                    <div class="wl-profile-avatar-overlay" v-if="overlay">Upload Avatar</div>
+                </div>
+                <input ref="fileUploadData" type="file" id="avatarUpload" @change="handleUpload" hidden> -->
                 <div>
                     <div class="wishr-field">
                         <label>User ID</label>
@@ -43,6 +47,9 @@ export default {
         const loading = ref(true)
         const profile = ref(null)
         const router = useRouter()
+        const overlay = ref(false)
+        const fileUploadData = ref(null)
+
         onMounted(async () => {
             await axios.get('/api/prot/profile')
             .then(response => {
@@ -54,6 +61,7 @@ export default {
             .finally(() => {
                 loading.value = false
             })
+            // await loadProfileAvatar()
         })
 
         async function logOut() {
@@ -70,7 +78,53 @@ export default {
                 console.log(error)
             })
         }
-        return { loading, profile, logOut }
+
+        function toggleOverlay(val) {
+            overlay.value = val
+        }
+
+        function openFileUpload() {
+            document.getElementById("avatarUpload").click()
+        }
+
+        async function loadProfileAvatar() {
+            await fetch('/api/prot/upload/profile')
+            .then(async response => {
+                const element = document.querySelector(".wl-profile-avatar")
+                element.style.backgroundImage = response
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        async function handleUpload() {
+            const formData = new FormData()
+            const file = fileUploadData.value.files[0]
+            formData.append("file", file)
+            
+            await axios.post('/api/prot/upload/profile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                if (response.data.Message !== 'success') {
+                    EventBus.emit('notify', {
+                        type: 'error',
+                        text: response.data.Message,
+                    })
+                } else {
+                    loadProfileAvatar()
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        return { loading, profile, logOut, toggleOverlay, overlay, openFileUpload, handleUpload, fileUploadData }
     }
 }
 </script>
@@ -84,6 +138,25 @@ export default {
     height: 200px;
     width: 200px;
     margin: auto;
+}
+
+.wl-profile-avatar-overlay {
+    background-color: rgb(0,0,0,0.6);
+    color: #FFF;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .wl-profile-container {
