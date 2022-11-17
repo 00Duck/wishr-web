@@ -134,9 +134,9 @@ input:focus-visible {
 }
 
 button:disabled,
-button[disabled],
+button[disabled=true],
 div:disabled,
-div[disabled] {
+div[disabled=true] {
     background-color: #ccc;
     color: #777;
     cursor: not-allowed;

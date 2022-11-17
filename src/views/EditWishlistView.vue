@@ -10,8 +10,13 @@
                     <input type="text" required v-model="list.Name">
                 </div>
             </div>
-            <div class="wl-form-item wl-container" v-for="item in list.Items" :key="item.ID">
-                <div class="wl-field flex-100"><div class="wl-btn-space"></div><div v-if="list.IsOwner" class="wishr-icon-link theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></div></div>
+            <div class="wl-form-item wl-container" v-for="item, index in list.Items" :key="item.ID">
+                <div class="wl-field flex-100 wl-item-bar">
+                    <div class="wl-btn-space"></div>
+                    <div v-if="list.IsOwner" class="wishr-icon-link theme-primary" @click.prevent="moveUp(item, index)" :disabled="index === 0"><i class="iconoir-arrow-up-circled"></i><span>Up</span></div>
+                    <div v-if="list.IsOwner" class="wishr-icon-link theme-primary" @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1"><i class="iconoir-arrow-down-circled"></i><span>Down</span></div>
+                    <div v-if="list.IsOwner" class="wishr-icon-link theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></div>
+                </div>
                 <div class="wl-field flex-100">
                     <label class="theme-primary">Item Name</label>
                     <input type="text" required v-model="item.Name" placeholder="Name">
@@ -77,6 +82,7 @@ export default {
                     }
                     data = await data.json()
                     list.value = data.Data
+                    setListItemOrder(list.value)
                 } catch (err) {
                     list_err.value = err.message
                 } finally {
@@ -95,6 +101,7 @@ export default {
                 Notes: "",
                 Price: "",
                 Quantity: 1,
+                Order: list.value.Items.length + 1,
                 PersonalItem: false
             })
         }
@@ -122,7 +129,33 @@ export default {
             }
         }
 
-        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive }
+        //ensures the list remains properly ordered. However it comes in is the new, trusted order
+        function setListItemOrder(list) {
+            if (!list.hasOwnProperty('Items')) { return }
+            for (let i = 0; i < list.Items.length; i++) {
+                list.Items[i].Order = i + 1
+            }
+        }
+
+        function moveUp(item, index) {
+            if (index === 0) { return }
+
+            item.Order = list.value.Items[index - 1].Order
+            list.value.Items[index - 1].Order = index + 1
+
+            list.value.Items.sort((a, b) => a.Order - b.Order)
+        }
+
+        function moveDown(item, index) {
+           if (index === list.value.Items.length - 1) { return }
+
+           item.Order = list.value.Items[index + 1].Order
+           list.value.Items[index + 1].Order = index + 1
+
+           list.value.Items.sort((a, b) => a.Order - b.Order)
+        }
+
+        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown }
     }
 }
 </script>
@@ -168,18 +201,17 @@ export default {
     margin-bottom: 5px;
 }
 
-.wl-delete-btn {
-    background-color: transparent;
-    border: 0;
-    white-space: nowrap;
-    cursor: pointer;
+.wl-item-bar {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    gap: 10px;
 }
-.wl-delete-btn:hover {
-    text-decoration: underline;
+
+.wl-item-bar>div[disabled=true] {
+    background-color: initial;
+    color: #ccc;
 }
+
 .wl-btn-space {
     flex: 100%;
 }
