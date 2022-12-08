@@ -1,24 +1,31 @@
 <template>
-    <div id="main-content">
-        <div class="wl-login-container">
-            <h2 class="theme-primary">
-                <div class="wishr-logo wl-login-logo theme-primary-mask"></div>
-            </h2>
-            <form @submit.prevent="login()">
-                <div class="wishr-field">
-                    <label class="">User Name</label>
-                    <input type="text" v-model="loginModel.UserName" />
+    <div class="container-md">
+        <div class="card mt-5 mx-auto wl-login-card">
+            <div class="wishr-logo wl-login-logo theme-primary-mask"></div>
+
+            <form @submit.prevent="login()" class="card-body py-5">
+                <div class="d-grid gap-2 col-sm-10 mx-auto">
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" v-model="loginModel.UserName" placeholder="User Name">
+                        <label for="">User Name</label>
+                    </div>
+                    <div class="form-floating mb-5">
+                        <input type="password" class="form-control" v-model="loginModel.Password"
+                            placeholder="Password">
+                        <label for="">Password</label>
+                    </div>
+                    
                 </div>
 
-                <div class="wishr-field">
-                    <label class="">Password</label>
-                    <input type="password" v-model="loginModel.Password" />
-                </div>
                 <div v-if="loading" class="wishr-loading" style="height: 50px;"></div>
-                <button type="submit" class="theme-primary-bg wl-login-btn wishr-btn"><i class="iconoir-log-in"></i><span>Log in</span></button>
-                <div @click="register()" class="theme-primary wishr-icon-link wl-register"><i class="iconoir-add-database-script"></i><span>Register</span></div>
+                <div v-else class="d-grid gap-2 col-sm-10 mx-auto">
+                    <button class="btn btn-primary" type="submit"><span>Log in</span></button>
+                    <button class="btn btn-outline-primary" @click="register()" type="button"><span>Register</span></button>
+                </div>
+                
             </form>
-        
+
         </div>
     </div>
 </template>
@@ -49,28 +56,28 @@ export default {
             }
             loading.value = true
             await axios.post("/api/open/login", loginModel.value)
-            .then((response) => {
-                resp.value = response.data
-                if (resp.value.Message !== 'success') {
+                .then((response) => {
+                    resp.value = response.data
+                    if (resp.value.Message !== 'success') {
+                        EventBus.emit('notify', {
+                            type: 'error',
+                            text: resp.value.Message
+                        })
+                    } else {
+                        localStorage.setItem('user', JSON.stringify(resp.value.Data))
+                        router.push({ name: "home" })
+                    }
+                })
+                .catch((err) => {
                     EventBus.emit('notify', {
                         type: 'error',
-                        text: resp.value.Message
+                        text: 'There was a problem attempting to log you in. Please try again later.'
                     })
-                } else {
-                    localStorage.setItem('user', JSON.stringify(resp.value.Data))
-                    router.push({name: "home"})
-                }                
-            })
-            .catch( (err) => {
-                EventBus.emit('notify', {
-                    type: 'error',
-                    text: 'There was a problem attempting to log you in. Please try again later.'
+                    console.log(err)
                 })
-                console.log(err)
-            })
-            .finally(() => {
-                loading.value = false;
-            })
+                .finally(() => {
+                    loading.value = false;
+                })
         }
 
         function showMessage() {
@@ -81,7 +88,7 @@ export default {
         }
 
         function register() {
-            router.push({name: "register"})
+            router.push({ name: "register" })
         }
 
         return { loginModel, login, showMessage, resp, register, loading }
@@ -89,33 +96,13 @@ export default {
 }
 </script>
 <style>
-.wl-login-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    color: #777;
-    margin: 10vh auto 0 auto;
-    width: 40%;
-    max-width: 500px;
-}
-
-.wl-login-container h2 {
-    width: 100%;
-    text-align: center;
-    margin: 0 auto 10px auto;
-}
-
-.wl-login-btn {
-    margin-top: 50px;
-}
-
-.wl-register {
-    margin: 20px auto 0 auto;
-    justify-content: center;
+.wl-login-card {
+    max-width: 600px;
 }
 
 .wl-login-logo {
     height: 55px;
     width: 55px;
+    margin: 2rem auto;
 }
 </style>

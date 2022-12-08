@@ -1,0 +1,27 @@
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+$body-bg: #efefef;
+
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "bootstrap/scss/variables";
+
+// 4. Include any default map overrides here
+$primary: #0059e3;
+$theme-colors: (
+  "primary": $primary,
+);
+
+$card-border-radius: 10px;
+$card-border-width: 0;
+
+
+// 5. Include remainder of required parts
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/card";
