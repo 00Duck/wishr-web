@@ -41,13 +41,6 @@ input:focus-visible {
     border-bottom: 1px solid #0059e3!important;
 }
 
-.wl-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    color: #777;
-}
-
 .wl-center {
     text-align: center;
 }

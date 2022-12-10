@@ -1,16 +1,16 @@
 <template>
     <Nav></Nav>
-    <div id="main-content">
+    <div class="container mt-3">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
         <form v-else>
-            <div class="wl-container wl-form">
+            <div class="card p-4 wl-form">
                 <WLEditBar :list="list"></WLEditBar>
                 <div class="wl-top-form-field">
                     <label class="theme-primary">Wishlist Name</label>
                     <input type="text" required v-model="list.Name">
                 </div>
             </div>
-            <div class="wl-form-item wl-container" v-for="item, index in list.Items" :key="item.ID">
+            <div class="wl-form-item card px-5 py-3" v-for="item, index in list.Items" :key="item.ID">
                 <div class="wl-field flex-100 wl-item-bar">
                     <div class="wl-btn-space"></div>
                     <div v-if="list.IsOwner" class="wishr-icon-link theme-primary" @click.prevent="moveUp(item, index)" :disabled="index === 0"><i class="iconoir-arrow-up-circled"></i><span>Up</span></div>
@@ -38,11 +38,11 @@
                     <input type="text" min="1" max="100" @change="enforcePositive(item)" required v-model="item.Quantity" placeholder="Quantity">
                 </div>
                 <div class="wl-field flex-50">
-                    <label class="theme-primary tooltip"><i class="iconoir-question-mark-circle wl-info-icon" title="Select to hide this item from others."></i>Personal Item</label>
+                    <label class="theme-primary"><i class="iconoir-question-mark-circle wl-info-icon" title="Select to hide this item from others."></i>Personal Item</label>
                     <input type="checkbox" v-model="item.PersonalItem" style="width:15px;">
                 </div>
             </div>
-            <button type="button" v-if="list.IsOwner" class="wishr-btn theme-primary-bg" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+            <button type="button" v-if="list.IsOwner" class="wishr-btn theme-primary-bg mb-5" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
         </form>
     </div>
 </template>

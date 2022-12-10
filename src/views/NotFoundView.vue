@@ -1,5 +1,5 @@
 <template>
-    <div id="main-content">
+    <div class="container mt-3">
         <div class="wl-not-found-container">
             <h1>404 Not Found</h1>
             <div class="wl-not-found-bg"></div>

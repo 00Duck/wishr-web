@@ -25,7 +25,7 @@ import { useRouter } from 'vue-router';
         display: flex;
         flex-direction: row;
         flex-flow: flex-end;
-        gap: 25px;
+        gap: 1rem;
     }
     .wl-action-item {
         white-space: nowrap;

@@ -1,8 +1,9 @@
 <template>
-    <div v-show="msg.show" class="wishr-msg" :class="{'wishr-msg-info': msg.type == 'info', 'wishr-msg-error': msg.type == 'error'}">
+    <div v-show="msg.show" class="alert alert-dismissible wishr-alert" :class="{'alert-info': msg.type == 'info', 'alert-danger': msg.type == 'error'}">
         <div>{{msg.text}}</div>
         <div class="wishr-msg-space"></div>
-        <div class="wishr-msg-close" @click="close()"><i class="iconoir-cancel"></i></div>
+        <!-- <div class="wishr-msg-close" @click="close()"><i class="iconoir-cancel"></i></div> -->
+        <button type="button" class="btn-close" aria-label="Close" @click="closeBanner()"></button>
     </div>
 </template>
 <script>
@@ -24,53 +25,26 @@ export default {
                 msg.value.text = data.text
 
                 setTimeout(() => {
-                    close()
+                    closeBanner()
                 }, 5000)
             })
         })
 
-        function close() {
-            msg.value = {
-                show: false,
-                type: '',
-                text: ''
-            }
+        function closeBanner() {
+            msg.value.show = false
+            msg.value.type = ''
+            msg.value.text = ''
         }
 
-        return { msg, close }
+        return { msg, closeBanner }
     }
 }
 </script>
 <style>
-    .wishr-msg {
-        position: fixed;
-        width: 80%;
-        z-index: 3;
-        padding: 6px 9px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        align-items: center;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-top: 5px;
-        border-radius: 10px;
-    }
-    .wishr-msg-close i {
-        display: inline;
-        font-size: 22px;
-        cursor: pointer;
-    }
-
-    .wishr-msg-info {
-        border: 1px solid rgb(51, 139, 255);
-        background-color: rgb(196, 221, 254);
-        color: rgb(0, 110, 255);
-    }
-    .wishr-msg-error {
-        border: 1px solid red;
-        background-color: rgb(252, 206, 206);
-        color: red;
+    .wishr-alert {
+        top: 0;
+        position: absolute !important;
+        z-index: 1;
+        width: 100%;
     }
 </style>

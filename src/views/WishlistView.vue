@@ -1,15 +1,15 @@
 <template>
     <ShareModal :list_id="list_id" v-if="share_modal_open" @closeModal="toggleModal(false)"></ShareModal>
     <Nav></Nav>
-    <div id="main-content">
+    <div class="container mt-3">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh"></div>
-        <div v-else-if="!list" class="wl-container wl-no-list-container">
+        <div v-else-if="!list" class="card px-5 py-3 wl-no-list-container">
             <h1>Uh oh!</h1>
             <div class="wl-no-list-bg"></div>
             <p>The list you are trying to view either does not exist or is no longer shared with you.</p>
             <div class="wishr-btn theme-primary-bg wl-no-list-btn" @click="router.push({name: 'home'})"><i class="iconoir-home-simple-door"></i><span>Back to safety</span></div>
         </div>
-        <div v-else class="wl-container">
+        <div v-else class="card p-4">
             <WLActionBar :id="list.ID" :can_edit="list.IsOwner" @openModal="toggleModal(true)"></WLActionBar>
             <h1 class="wl-center">{{ list.Name }}</h1>
             <div class="wl-list-info wl-center">

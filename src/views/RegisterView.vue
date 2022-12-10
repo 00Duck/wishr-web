@@ -1,6 +1,6 @@
 <template>
-    <div id="main-content">
-        <div class="wl-container wl-register-container">
+    <div class="container mt-3">
+        <div class="card p-5">
             <h2 class="wl-register-title">Create your Account</h2>
             <br />
             <form action="post" @submit.prevent="submit()">
@@ -105,13 +105,6 @@ export default {
 }
 </script>
 <style>
-.wl-register-container {
-    margin-left: 15%;
-    margin-right: 15%;
-    padding-bottom: 45px;
-    padding-left: 12%;
-    padding-right: 12%;
-}
 .wl-register-title {
     text-align: center;
 }

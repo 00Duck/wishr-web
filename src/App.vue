@@ -28,13 +28,10 @@ export default {
   font-weight: 100;
 }
 #app {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
   font-family: "Fira Sans", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  /* color: #2c3e50; */
 }
 #main-content {
   flex: 100%;

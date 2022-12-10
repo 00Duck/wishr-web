@@ -1,13 +1,13 @@
 <template>
     <Nav></Nav>
-    <div id="main-content">
-        <div class="wl-container">
+    <div class="container mt-3">
+        <div class="card px-5 py-3">
             <h1 class="wl-center">My Profile</h1>
             <div v-if="loading" class="wishr-loading" style="margin:10px auto;"></div>
             <div v-else-if="!profile">
                 Something went wrong
             </div>
-            <div v-else class="wl-profile-container">
+            <div v-else class="wl-profile-container p-4">
                 <div class="wl-profile-avatar"></div>
                 <!-- <div class="wl-profile-avatar" @mouseenter="toggleOverlay(true)" @mouseleave="toggleOverlay(false)" @click="openFileUpload()">
                     <div class="wl-profile-avatar-overlay" v-if="overlay">Upload Avatar</div>
@@ -157,10 +157,6 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-}
-
-.wl-profile-container {
-    padding: 50px 13%;
 }
 
 .wl-profile-container input:read-only {

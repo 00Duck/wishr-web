@@ -2,7 +2,7 @@
     <h2 class="wl-list-title">{{ title }}</h2>
     <div v-if="loading" class="wishr-loading"></div>
     <div v-else>
-        <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="wl-list-item wl-container" v-for="item in list" :key="item.ID" v-if="list.length > 0">
+        <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="wl-list-item" v-for="item in list" :key="item.ID" v-if="list.length > 0">
             <div class="wl-icon theme-primary"><i class="iconoir-bookmark-book"></i></div>
             <div class="wl-content">
                 <div>
@@ -55,13 +55,17 @@
 </script>
 
 <style>
-    .wl-list-title {
+   .wl-list-title {
         /* border-bottom: 1px solid rgba(150, 150, 150, 0.3); */
         padding-bottom: 10px;
         margin-bottom: 25px;
         font-size: 30px;
     }
     .wl-list-item {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        color: #777;
         text-decoration: none;
         margin-bottom: 10px;
         display:flex;

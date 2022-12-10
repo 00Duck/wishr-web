@@ -1,6 +1,7 @@
 <template>
     <div class="wishr-modal-backdrop">
-        <div class="wishr-modal">
+        <div class="container-sm">
+            <div class="card mx-auto mt-5 p-4 wishr-modal-width">
             <h2 class="wl-share-title">Share Wishlist</h2>
             <p>Search for friends and family members below. Everyone shown here will be able to view this list!</p>
             <br>
@@ -29,6 +30,7 @@
                 <div class="wishr-btn theme-secondary-bg wl-share-btn" @click="closeModal()">Cancel</div>
                 <div class="wishr-btn theme-primary-bg wl-share-btn" @click="sendSharedUsers()">Save</div>
             </div>
+        </div>
         </div>
     </div>
     
@@ -115,6 +117,9 @@ export default {
 }
 </script>
 <style>
+    .wishr-modal-width {
+        max-width: 600px;
+    }
     .wl-share-title {
         text-align: center;
     }

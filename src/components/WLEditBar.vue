@@ -56,7 +56,7 @@ export default {
         display: flex;
         flex-direction: row;
         flex-flow: flex-end;
-        gap: 25px;
+        gap: 1rem;
     }
     .wl-edit-bar .wl-edit-item {
         white-space: nowrap;
