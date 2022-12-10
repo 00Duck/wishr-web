@@ -11,27 +11,38 @@
         </div>
         <div v-else class="card p-4">
             <WLActionBar :id="list.ID" :can_edit="list.IsOwner" @openModal="toggleModal(true)"></WLActionBar>
-            <h1 class="text-center">{{ list.Name }}</h1>
-            <div class="text-center d-flex flex-column">
-                <span v-if="!list.IsOwner">Created by {{ list.OwnerFullName }} on {{ new Date(list.CreatedAt).toDateString() }}</span>
-                <span><b>Last Updated</b> {{ new Date(list.UpdatedAt).toDateString()}}</span>
+            <h1 class="text-center my-3">{{ list.Name }}</h1>
+            <div class="text-center d-flex flex-row flex-wrap justify-content-center gap-2 mt-1 mb-3">
+                <div class="wishr-badge" v-if="!list.IsOwner">
+                    <div>Shared by</div>
+                    <div class="wishr-badge-green">{{ list.OwnerFullName }}</div>
+                </div>
+                <div class="wishr-badge">
+                    <div>Created on</div>
+                    <div class="wishr-badge-purple">{{ new Date(list.CreatedAt).toDateString() }}</div>
+                </div>
+                <div class="wishr-badge">
+                    <div>Last updated</div>
+                    <div class="wishr-badge-blue">{{ new Date(list.UpdatedAt).toDateString()}}</div>
+                </div>
             </div>
-            <br />
 
-            <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-2" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
-                <div class="col-8">
+            <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-3" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
+                <div class="col-md-10 col-xs-12">
                     <div class="fs-4">{{ item.Name }}</div>
-                    <div class="fs-6"><a :href="getURL(item.URL)" rel="noreferrer" target="_blank">{{ snipURL(item.URL) }}</a></div>
-                    <div class="fs-6 fst-italic fw-lighter">{{ item.Notes }}</div>
+                    <div class="fs-6 fw-lighter my-2">{{ item.Notes }}</div>
+                    <div class="badge bg-secondary my-2">Wants {{ item.Quantity }} <span v-if="item.Price">@ {{ item.Price }} ea.</span></div>
                     <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
                 </div>
-                <div class="col-4 text-end">
-                    <div>Price: <b>{{ item.Price }}</b></div>
-                    <div>Quantity: <b>{{ item.Quantity }}</b></div>
-                    <div v-if="list.Owner !== current_user.ID" class="d-flex flex-row-reverse">
-                        <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="btn btn-primary btn-sm"><i class="iconoir-gift"></i><span>Reserve</span></button>
-                        <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="btn btn-danger btn-sm"><i class="iconoir-remove-from-cart"></i><span>Remove Reservation</span></button>
+                <div class="col-md-2 col-xs-12 text-end gy-2">
+                    <div v-if="list.Owner !== current_user.ID" class="d-flex flex-column gap-1">
+                        <a :href="getURL(item.URL)" class="btn btn-outline-primary"  rel="noreferrer" target="_blank"><i class="iconoir-navigator"></i>Visit item</a>
+                        <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="btn btn-primary"><i class="iconoir-gift"></i><span>Reserve item</span></button>
+                        <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="btn btn-danger"><i class="iconoir-remove-from-cart"></i><span>Release item</span></button>
                         <button v-else class="btn btn-light" disabled><i class="iconoir-info-empty"></i><span><b>{{ item.ReservedByFullName }}</b> is getting this item</span></button>
+                    </div>
+                    <div v-else class="d-flex flex-column gap-1">
+                        <a :href="getURL(item.URL)" class="btn btn-outline-primary" rel="noreferrer" target="_blank"><i class="iconoir-navigator"></i>Visit item</a>
                     </div>
                 </div>
 

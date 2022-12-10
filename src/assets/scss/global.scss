@@ -10,9 +10,11 @@ $body-bg: #efefef;
 
 // 4. Include any default map overrides here
 $primary: #0059e3;
+$secondary: #7487a2;
 $danger: #e40004;
 $theme-colors: (
   "primary": $primary,
+  "secondary": $secondary,
   "danger": $danger,
 );
 

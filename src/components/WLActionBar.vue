@@ -1,9 +1,11 @@
 <template>
-    <div class="wl-action-bar">
-        <div class="wl-action-item theme-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</div>
-        <div class="wl-space"></div>
-        <div v-if="can_edit" class="wl-action-item theme-primary" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</div>
-        <div v-if="can_edit" class="wl-action-item theme-primary" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</div>
+    <div class="d-flex">
+        <button class="btn btn-outline-primary btn-sm" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</button>
+        <div class="flex-fill"></div>
+        <div class="btn-group" role="group" aria-label="Menu Options">
+            <button v-if="can_edit" class="btn btn-outline-primary btn-sm" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</button>
+            <button v-if="can_edit" class="btn btn-outline-primary btn-sm" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</button>
+        </div>
     </div>
 </template>
 

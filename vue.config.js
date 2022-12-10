@@ -3,7 +3,7 @@ module.exports = defineConfig({
   pwa: {
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black-transculent',
-    themeColor: '#EFEFEF'
+    themeColor: '#212529'
   },
   transpileDependencies: true,
   pages: {

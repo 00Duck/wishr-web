@@ -26,21 +26,67 @@
     background-color: #e40004;
 }
 
+/* Fixes our cards on the home page because they are really links */
+a[class^=card] {
+    text-decoration: none;
+    color: initial;
+}
+
+ 
+/* The badge in the main wishlist view */
+.wishr-badge {
+    display: inline-block;
+    width: initial;
+    font-size: .8em;
+    white-space: nowrap;
+}
+
+.wishr-badge > div {
+    padding: .2rem .5rem;
+    display: inline-block;
+    border-collapse: collapse;
+    color: #FFF;
+}
+
+.wishr-badge>div:first-child {
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    background-color: #444;
+    border-right: 0;
+    font-weight: bold;
+}
+
+.wishr-badge>div:last-child {
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.wishr-badge-green {
+    background-color: #0ab51c;
+}
+
+.wishr-badge-blue {
+    background-color: #1587cc;
+}
+
+.wishr-badge-purple {
+    background-color: #c615cc;
+}
+
+/* End badge */
+
+/* Needed for icon alignment */
 .btn i {
     margin-right: .3rem;
     display: inline-block;
     vertical-align: text-top;
 }
 
-html {
-    /* background-color: #efefef; */
-    height: 100%;
+[class^="iconoir-"], [class*=" iconoir-"] {
+    display: inline-block;
+    font-size: 1.1rem;
 }
 
-body {
-    margin: 0;
-    height: 100%;
-}
 
 input:focus-visible {
     outline: none!important;

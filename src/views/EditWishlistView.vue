@@ -42,7 +42,13 @@
                     <input type="checkbox" v-model="item.PersonalItem" style="width:15px;">
                 </div>
             </div>
-            <button type="button" v-if="list.IsOwner" class="wishr-btn theme-primary-bg mb-5" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+            <div class="wl-sticky-space"></div>
+            <div v-if="list.IsOwner" class="wl-sticky-btn">
+                <div class="card d-flex flex-column p-3 gap-2 justify-content-center">
+                    <button type="button" class="btn btn-primary" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+                </div>
+            </div>
+
         </form>
     </div>
 </template>
@@ -161,6 +167,15 @@ export default {
 </script>
 
 <style>
+.wl-sticky-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.wl-sticky-space {
+    height: 3rem;
+}
 .wl-form {
     display: flex;
     flex-direction: column;
