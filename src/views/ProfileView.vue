@@ -1,34 +1,39 @@
 <template>
     <Nav></Nav>
     <div class="container my-3">
-        <div class="card px-5 py-3">
-            <h1 class="wl-center">My Profile</h1>
+        <div class="card py-4">
+            <h1 class="text-center">My Profile</h1>
             <div v-if="loading" class="wishr-loading" style="margin:10px auto;"></div>
             <div v-else-if="!profile">
                 Something went wrong
             </div>
-            <div v-else class="wl-profile-container p-4">
+            <div v-else class="py-4">
                 <div class="wl-profile-avatar"></div>
                 <!-- <div class="wl-profile-avatar" @mouseenter="toggleOverlay(true)" @mouseleave="toggleOverlay(false)" @click="openFileUpload()">
                     <div class="wl-profile-avatar-overlay" v-if="overlay">Upload Avatar</div>
                 </div>
                 <input ref="fileUploadData" type="file" id="avatarUpload" @change="handleUpload" hidden> -->
-                <div>
-                    <div class="wishr-field">
-                        <label>User ID</label>
-                        <input type="text" :value="profile.ID" readonly>
+                <div class="row my-3 justify-content-center mt-4">
+                    <div class="col-8">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" :value="profile.ID" placeholder="Item Name" disabled>
+                            <label>User ID</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" v-model="profile.UserName" placeholder="User name" disabled>
+                            <label>User name</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" v-model="profile.FullName" placeholder="Full name" disabled>
+                            <label>Full name</label>
+                        </div>
+                        <div class="d-flex flex-column gap-2 justify-content-center mt-4">
+                            <button type="button" @click.prevent="logOut()" class="btn btn-danger">
+                                <i class="iconoir-log-out"></i><span>Log Out</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="wishr-field">
-                        <label>User Name</label>
-                        <input type="text" v-model="profile.UserName" readonly>
-                    </div>
-                    <div class="wishr-field">
-                        <label>Full Name</label>
-                        <input type="text" v-model="profile.FullName" readonly>
-                    </div>
-                </div>
-                <br />
-                <button type="button" @click.prevent="logOut()" class="wishr-btn theme-delete-bg wl-log-out"><i class="iconoir-log-out"></i><span>Log Out</span></button>
+                </div>                
             </div>
         </div>
     </div>
@@ -52,31 +57,31 @@ export default {
 
         onMounted(async () => {
             await axios.get('/api/prot/profile')
-            .then(response => {
-                profile.value = response.data.Data
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(() => {
-                loading.value = false
-            })
+                .then(response => {
+                    profile.value = response.data.Data
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    loading.value = false
+                })
             // await loadProfileAvatar()
         })
 
         async function logOut() {
             await axios.post('/api/open/logout')
-            .then(response => {
-                EventBus.emit('notify', {
-                    type: 'info',
-                    text: 'You have been logged out.'
+                .then(response => {
+                    EventBus.emit('notify', {
+                        type: 'info',
+                        text: 'You have been logged out.'
+                    })
+                    localStorage.removeItem('user')
+                    router.push({ name: 'login' })
                 })
-                localStorage.removeItem('user')
-                router.push({name:'login'})
-            })
-            .catch(err => {
-                console.log(error)
-            })
+                .catch(err => {
+                    console.log(error)
+                })
         }
 
         function toggleOverlay(val) {
@@ -89,39 +94,39 @@ export default {
 
         async function loadProfileAvatar() {
             await fetch('/api/prot/upload/profile')
-            .then(async response => {
-                const element = document.querySelector(".wl-profile-avatar")
-                element.style.backgroundImage = response
-                
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(async response => {
+                    const element = document.querySelector(".wl-profile-avatar")
+                    element.style.backgroundImage = response
+
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
 
         async function handleUpload() {
             const formData = new FormData()
             const file = fileUploadData.value.files[0]
             formData.append("file", file)
-            
+
             await axios.post('/api/prot/upload/profile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(response => {
-                if (response.data.Message !== 'success') {
-                    EventBus.emit('notify', {
-                        type: 'error',
-                        text: response.data.Message,
-                    })
-                } else {
-                    loadProfileAvatar()
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(response => {
+                    if (response.data.Message !== 'success') {
+                        EventBus.emit('notify', {
+                            type: 'error',
+                            text: response.data.Message,
+                        })
+                    } else {
+                        loadProfileAvatar()
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
 
         return { loading, profile, logOut, toggleOverlay, overlay, openFileUpload, handleUpload, fileUploadData }
@@ -141,13 +146,13 @@ export default {
 }
 
 .wl-profile-avatar-overlay {
-    background-color: rgb(0,0,0,0.6);
+    background-color: rgb(0, 0, 0, 0.6);
     color: #FFF;
     text-align: center;
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    
+
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -159,11 +164,4 @@ export default {
     cursor: pointer;
 }
 
-.wl-profile-container input:read-only {
-    color: #999;
-    cursor: not-allowed;
-}
-.wl-log-out {
-    margin: auto;
-}
 </style>

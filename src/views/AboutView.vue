@@ -2,7 +2,7 @@
   <Nav></Nav>
   <div class="container my-3">
     <div class="card px-5 py-3 wl-about-container">
-        <h1 class="wl-center">About</h1>
+        <h1 class="text-center">About</h1>
       <h2>What is this?</h2>
       <p>Wishr is an easy way to create and share wishlists between friends and family.</p>
         <h2>What do I do?</h2>

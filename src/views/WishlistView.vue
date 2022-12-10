@@ -30,19 +30,19 @@
             <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-3" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
                 <div class="col-md-10 col-xs-12">
                     <div class="fs-4">{{ item.Name }}</div>
-                    <div class="fs-6 fw-lighter my-2">{{ item.Notes }}</div>
-                    <div class="badge bg-secondary my-2">Wants {{ item.Quantity }} <span v-if="item.Price">@ {{ item.Price }} ea.</span></div>
-                    <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
+                    <div class="fs-6 fw-lighter mb-2">{{ item.Notes }}</div>
+                    <div class="badge bg-secondary mb-2">Wants {{ item.Quantity }} <span v-if="item.Price">@ {{ item.Price }} ea.</span></div>
+                    <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden mb-2"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
                 </div>
                 <div class="col-md-2 col-xs-12 text-end gy-2">
                     <div v-if="list.Owner !== current_user.ID" class="d-flex flex-column gap-1">
-                        <a :href="getURL(item.URL)" class="btn btn-outline-primary"  rel="noreferrer" target="_blank"><i class="iconoir-navigator"></i>Visit item</a>
+                        <a :href="getURL(item.URL)" class="btn btn-outline-primary"  rel="noreferrer" target="_blank" v-if="item.URL"><i class="iconoir-navigator"></i>Visit link</a>
                         <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="btn btn-primary"><i class="iconoir-gift"></i><span>Reserve item</span></button>
                         <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="btn btn-danger"><i class="iconoir-remove-from-cart"></i><span>Release item</span></button>
                         <button v-else class="btn btn-light" disabled><i class="iconoir-info-empty"></i><span><b>{{ item.ReservedByFullName }}</b> is getting this item</span></button>
                     </div>
                     <div v-else class="d-flex flex-column gap-1">
-                        <a :href="getURL(item.URL)" class="btn btn-outline-primary" rel="noreferrer" target="_blank"><i class="iconoir-navigator"></i>Visit item</a>
+                        <a :href="getURL(item.URL)" class="btn btn-outline-primary" rel="noreferrer" target="_blank" v-if="item.URL"><i class="iconoir-navigator"></i>Visit link</a>
                     </div>
                 </div>
 

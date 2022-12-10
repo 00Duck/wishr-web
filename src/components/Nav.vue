@@ -1,7 +1,6 @@
 <template>
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="#"><div class="wishr-logo wl-nav-logo"></div>Wishr</a> -->
             <router-link :to="{ 'name': 'home' }" class="navbar-brand">
                 <div class="wishr-logo wl-nav-logo"></div>Wishr
             </router-link>
@@ -11,6 +10,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
+                    </li>
                     <li class="nav-item">
                         <router-link :to="{ 'name': 'wl-create' }" class="wl-link"><i
                                 class="iconoir-add-database-script"></i>Create Wishlist</router-link>
@@ -27,13 +29,6 @@
             </div>
         </div>
     </nav>
-    <!-- <div class="wl-nav">
-        <h3><div class="wishr-logo wl-nav-logo"></div><div>Wishr</div></h3>
-        <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
-        <router-link :to="{'name': 'wl-create'}" class="wl-link"><i class="iconoir-add-database-script"></i>Create Wishlist</router-link>
-        <router-link :to="{'name': 'profile'}" class="wl-link"><i class="iconoir-profile-circled"></i>My Profile</router-link>
-        <router-link :to="{'name': 'about'}" class="wl-link"><i class="iconoir-question-mark-circle"></i>About</router-link>
-    </div> -->
 </template>
 
 <script>

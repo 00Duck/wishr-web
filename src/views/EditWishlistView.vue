@@ -3,49 +3,69 @@
     <div class="container my-3">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
         <form v-else>
-            <div class="card p-4 wl-form">
-                <WLEditBar :list="list"></WLEditBar>
-                <div class="wl-top-form-field">
-                    <label class="theme-primary">Wishlist Name</label>
-                    <input type="text" required v-model="list.Name">
+            <div class="card p-4 my-3">
+                <WLEditBar :list="list" class="mb-4"></WLEditBar>
+                <div class="form-floating mx-4">
+                    <input type="text" class="form-control" v-model="list.Name" placeholder="Wishlist name">
+                    <label class="text-primary">Wishlist name</label>
                 </div>
             </div>
-            <div class="wl-form-item card px-5 py-3" v-for="item, index in list.Items" :key="item.ID">
-                <div class="wl-field flex-100 wl-item-bar">
-                    <div class="wl-btn-space"></div>
-                    <div v-if="list.IsOwner" class="wishr-icon-link theme-primary" @click.prevent="moveUp(item, index)" :disabled="index === 0"><i class="iconoir-arrow-up-circled"></i><span>Up</span></div>
-                    <div v-if="list.IsOwner" class="wishr-icon-link theme-primary" @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1"><i class="iconoir-arrow-down-circled"></i><span>Down</span></div>
-                    <div v-if="list.IsOwner" class="wishr-icon-link theme-delete" @click.prevent="deleteListItem(item)"><i class="iconoir-remove-empty"></i><span>Delete Item</span></div>
+            <div class="card px-5 py-3 my-3" v-for="item, index in list.Items" :key="item.ID">
+                <div class="d-flex flex-row">
+                    <div class="flex-fill"></div>
+                    <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            @click.prevent="moveUp(item, index)" :disabled="index === 0">
+                            <i class="iconoir-arrow-up-circled"></i><span>Up</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1">
+                            <i class="iconoir-arrow-down-circled"></i><span>Down</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm"
+                            @click.prevent="deleteListItem(item)">
+                            <i class="iconoir-remove-empty"></i><span>Delete Item</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="wl-field flex-100">
-                    <label class="theme-primary">Item Name</label>
-                    <input type="text" required v-model="item.Name" placeholder="Name">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" v-model="item.Name" placeholder="Item Name">
+                    <label class="text-primary">Item name</label>
                 </div>
-                <div class="wl-field flex-100">
-                    <label class="theme-primary">URL</label>
-                    <input type="text" required v-model="item.URL" placeholder="URL">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" v-model="item.URL" placeholder="URL">
+                    <label class="text-primary">URL</label>
                 </div>
-                <div class="wl-field flex-100">
-                    <label class="theme-primary">Notes</label>
-                    <input type="text" v-model="item.Notes" placeholder="Notes">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" v-model="item.Notes" placeholder="Notes">
+                    <label class="text-primary">Notes</label>
                 </div>
-                <div class="wl-field flex-50">
-                    <label class="theme-primary">Price</label>
-                    <input type="text" required v-model="item.Price" placeholder="Price">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" v-model="item.Price" placeholder="Price">
+                            <label class="text-primary">Price</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-2">
+                            <input type="text" min="1" max="100" @change="enforcePositive(item)" class="form-control"
+                                v-model="item.Quantity" placeholder="Quantity">
+                            <label class="text-primary">Quantity</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="wl-field flex-50">
-                    <label class="theme-primary">Quantity</label>
-                    <input type="text" min="1" max="100" @change="enforcePositive(item)" required v-model="item.Quantity" placeholder="Quantity">
-                </div>
-                <div class="wl-field flex-50">
-                    <label class="theme-primary"><i class="iconoir-question-mark-circle wl-info-icon" title="Select to hide this item from others."></i>Personal Item</label>
-                    <input type="checkbox" v-model="item.PersonalItem" style="width:15px;">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
+                    <label class="form-check-label text-primary" for="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">Personal Item</label>
                 </div>
             </div>
             <div class="wl-sticky-space"></div>
             <div v-if="list.IsOwner" class="wl-sticky-btn">
-                <div class="card d-flex flex-column p-3 gap-2 justify-content-center">
-                    <button type="button" class="btn btn-primary" @click.prevent="createListItem()"><i class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span v-else>Add an item</span></button>
+                <div class="d-flex flex-column p-3 gap-2 justify-content-center wl-sticky-bg">
+                    <button type="button" class="btn btn-primary" @click.prevent="createListItem()"><i
+                            class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span
+                            v-else>Add an item</span></button>
                 </div>
             </div>
 
@@ -124,7 +144,7 @@ export default {
                 if (isNaN(item.Quantity)) {
                     item.Quantity = 1
                 }
-            } catch(e) {
+            } catch (e) {
                 item.Quantity = 1
             }
             if (item.Quantity < 1) {
@@ -153,12 +173,12 @@ export default {
         }
 
         function moveDown(item, index) {
-           if (index === list.value.Items.length - 1) { return }
+            if (index === list.value.Items.length - 1) { return }
 
-           item.Order = list.value.Items[index + 1].Order
-           list.value.Items[index + 1].Order = index + 1
+            item.Order = list.value.Items[index + 1].Order
+            list.value.Items[index + 1].Order = index + 1
 
-           list.value.Items.sort((a, b) => a.Order - b.Order)
+            list.value.Items.sort((a, b) => a.Order - b.Order)
         }
 
         return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown }
@@ -173,93 +193,17 @@ export default {
     left: 0;
     width: 100%;
 }
+
 .wl-sticky-space {
     height: 3rem;
 }
-.wl-form {
-    display: flex;
-    flex-direction: column;
-}
-.wl-form, .wl-form-item {
-    margin-bottom: 15px;
-}
 
-.wl-form input {
-    padding: 10px 10px 10px 0px;
-    border: 0;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    color: #666;
-    width: 100%;
-}
-.wl-form label {
-    white-space: nowrap;
-    padding: 5px 5px 5px 0px;
-}
-.wl-top-form-field {
-    margin-top:20px;
-    padding-left: calc(10% - 20px);
-    padding-right: calc(10% - 20px);
-}
-
-.wl-form-item {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding-left: 10%;
-    padding-right: 10%;
-}
-.wl-field {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 5px;
-}
-
-.wl-item-bar {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-
-.wl-item-bar>div[disabled=true] {
-    background-color: initial;
-    color: #ccc;
-}
-
-.wl-btn-space {
-    flex: 100%;
-}
-
-.wl-form-item input {
-    padding: 5px 5px 5px 0px;
-    border: 0;
-    border-bottom: 1px solid #ddd;
-    color: #666;
-    width: 100%;
-}
-
-.wl-form-item label {
-    white-space: nowrap;
-    padding: 5px 5px 5px 0px;
-    min-width: 80px;
-}
-.flex-100 {
-    flex: 100%;
-}
-.flex-50 {
-    flex: 48%;
-}
-
-.wl-field i {
-    display: inline-block;
-    font-size: 18px;
-    margin-right: 5px;
+.wl-sticky-bg {
+    background-color: #FFFFFF;
 }
 
 .wl-info-icon {
-    font-size: 14px!important;
+    font-size: 16px !important;
     cursor: pointer;
 }
-
 </style>
