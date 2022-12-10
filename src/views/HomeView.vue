@@ -1,6 +1,6 @@
 <template>
     <Nav></Nav>
-    <div class="container mt-3">
+    <div class="container my-3">
         <List :list_url="my_lists_url" :title="my_wl_title" :list_empty_msg="my_list_empty" :bg="my_list_bg"></List>
         <br />
         <List :list_url="shared_lists_url" :title="shared_wl_title" :list_empty_msg="shared_list_empty" :bg="shared_list_bg"></List>

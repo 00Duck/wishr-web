@@ -1,6 +1,6 @@
 <template>
     <Nav></Nav>
-    <div class="container mt-3">
+    <div class="container my-3">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
         <form v-else>
             <div class="card p-4 wl-form">

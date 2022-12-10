@@ -1,40 +1,40 @@
 <template>
     <ShareModal :list_id="list_id" v-if="share_modal_open" @closeModal="toggleModal(false)"></ShareModal>
     <Nav></Nav>
-    <div class="container mt-3">
+    <div class="container my-3">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh"></div>
-        <div v-else-if="!list" class="card px-5 py-3 wl-no-list-container">
+        <div v-else-if="!list" class="card p-5 d-flex flex-column align-items-center gap-4">
             <h1>Uh oh!</h1>
             <div class="wl-no-list-bg"></div>
             <p>The list you are trying to view either does not exist or is no longer shared with you.</p>
-            <div class="wishr-btn theme-primary-bg wl-no-list-btn" @click="router.push({name: 'home'})"><i class="iconoir-home-simple-door"></i><span>Back to safety</span></div>
+            <div class="btn btn-primary btn-lg" @click="router.push({name: 'home'})"><i class="iconoir-home-simple-door"></i><span>Back to safety</span></div>
         </div>
         <div v-else class="card p-4">
             <WLActionBar :id="list.ID" :can_edit="list.IsOwner" @openModal="toggleModal(true)"></WLActionBar>
-            <h1 class="wl-center">{{ list.Name }}</h1>
-            <div class="wl-list-info wl-center">
+            <h1 class="text-center">{{ list.Name }}</h1>
+            <div class="text-center d-flex flex-column">
                 <span v-if="!list.IsOwner">Created by {{ list.OwnerFullName }} on {{ new Date(list.CreatedAt).toDateString() }}</span>
                 <span><b>Last Updated</b> {{ new Date(list.UpdatedAt).toDateString()}}</span>
             </div>
             <br />
-            <div v-for="item in list.Items" :key="item.ID" class="wl-detail-line" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
-                <ul>
-                    <li>
-                        <div class="wl-detail-title">{{ item.Name }}</div>
-                        <div class="wl-url"><a :href="getURL(item.URL)" rel="noreferrer" target="_blank">{{ snipURL(item.URL) }}</a></div>
-                        <div class="wl-detail-notes">{{ item.Notes }}</div>
-                        <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
-                    </li>
-                </ul>
-                <div>
-                    <div class="wl-pill">Price: <b>{{ item.Price }}</b></div>
-                    <div class="wl-pill">Quantity: <b>{{ item.Quantity }}</b></div>
-                    <div v-if="list.Owner !== current_user.ID">
-                        <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="wishr-btn wl-get-item theme-primary-bg"><i class="iconoir-gift"></i><span>Reserve</span></button>
-                        <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="wishr-btn wl-get-item theme-delete-bg"><i class="iconoir-remove-from-cart"></i><span>Remove Reservation</span></button>
-                        <div v-else class="wl-reserve-notify"><i class="iconoir-info-empty"></i><span><b>{{ item.ReservedByFullName }}</b> is getting this item</span></div>
-                    </div> 
+
+            <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-2" v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
+                <div class="col-8">
+                    <div class="fs-4">{{ item.Name }}</div>
+                    <div class="fs-6"><a :href="getURL(item.URL)" rel="noreferrer" target="_blank">{{ snipURL(item.URL) }}</a></div>
+                    <div class="fs-6 fst-italic fw-lighter">{{ item.Notes }}</div>
+                    <div v-if="item.PersonalItem && list.IsOwner" class="wl-item-hidden"><i class="iconoir-eye-off"></i><span>Item is only visible to you</span></div>
                 </div>
+                <div class="col-4 text-end">
+                    <div>Price: <b>{{ item.Price }}</b></div>
+                    <div>Quantity: <b>{{ item.Quantity }}</b></div>
+                    <div v-if="list.Owner !== current_user.ID" class="d-flex flex-row-reverse">
+                        <button type="button" @click.prevent="reserveItem(item)" v-if="item.ReservedBy == ''" class="btn btn-primary btn-sm"><i class="iconoir-gift"></i><span>Reserve</span></button>
+                        <button type="button" @click.prevent="unreserveItem(item)" v-else-if="item.ReservedBy == current_user.ID" class="btn btn-danger btn-sm"><i class="iconoir-remove-from-cart"></i><span>Remove Reservation</span></button>
+                        <button v-else class="btn btn-light" disabled><i class="iconoir-info-empty"></i><span><b>{{ item.ReservedByFullName }}</b> is getting this item</span></button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -141,72 +141,7 @@ export default {
 </script>
 
 <style>
-.wl-detail-line {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 32px;
-}
 
-.wl-detail-line li {
-    list-style: none;
-    line-height: 30px;
-}
-
-.wl-detail-line ul {
-    margin: 0;
-}
-
-.wl-detail-title {
-    font-size: 22px;
-}
-
-.wl-detail-title i {
-    display: inline-block;
-    margin-bottom: -5px;
-    text-indent: 125px;
-
-}
-
-.wl-list-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.wl-detail-notes {
-    font-style: italic;
-    color: #aaa;
-}
-
-.wl-pill {
-    display: block;
-    white-space: nowrap;
-    font-size: 16px;
-    text-align: end;
-}
-
-.wl-get-item {
-    margin-top: 5px;
-    padding: 5px 10px;
-}
-
-.wl-no-list-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    gap: 20px;
-}
-.wl-no-list-container h1 {
-    font-size: 40px;
-    margin: 2% auto 0 auto; 
-}
-
-.wl-no-list-btn {
-    white-space: nowrap;
-    max-width: 250px;
-}
 .wl-no-list-bg {
     mask: url(@/assets/not-found.svg);
     mask-size: contain;
@@ -229,20 +164,5 @@ export default {
 }
 .wl-item-hidden i {
     font-size: 22px;
-}
-
-.wl-reserve-notify {
-    padding: 5px 10px;
-    background-color: #eee;
-    color: #888;
-    border-radius: 10px;
-    cursor: not-allowed;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
-}
-.wl-reserve-notify i {
-    font-size: 22px;   
 }
 </style>

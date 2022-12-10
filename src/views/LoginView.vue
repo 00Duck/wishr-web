@@ -1,6 +1,6 @@
 <template>
     <div class="container-md">
-        <div class="card mt-5 mx-auto wl-login-card">
+        <div class="card my-5 mx-auto wl-login-card">
             <div class="wishr-logo wl-login-logo theme-primary-mask"></div>
 
             <form @submit.prevent="login()" class="card-body py-5">

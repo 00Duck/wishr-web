@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-3">
+    <div class="container my-3">
         <div class="card p-5">
             <h2 class="wl-register-title">Create your Account</h2>
             <br />

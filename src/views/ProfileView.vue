@@ -1,6 +1,6 @@
 <template>
     <Nav></Nav>
-    <div class="container mt-3">
+    <div class="container my-3">
         <div class="card px-5 py-3">
             <h1 class="wl-center">My Profile</h1>
             <div v-if="loading" class="wishr-loading" style="margin:10px auto;"></div>

@@ -1,5 +1,10 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  pwa: {
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black-transculent',
+    themeColor: '#EFEFEF'
+  },
   transpileDependencies: true,
   pages: {
     index: {
