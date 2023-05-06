@@ -16,15 +16,15 @@
                     <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
                         <button type="button" class="btn btn-outline-primary btn-sm"
                             @click.prevent="moveUp(item, index)" :disabled="index === 0">
-                            <i class="iconoir-arrow-up-circled"></i><span>Up</span>
+                            <i class="iconoir-arrow-up-circle"></i><span>Up</span>
                         </button>
                         <button type="button" class="btn btn-outline-primary btn-sm"
                             @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1">
-                            <i class="iconoir-arrow-down-circled"></i><span>Down</span>
+                            <i class="iconoir-arrow-down-circle"></i><span>Down</span>
                         </button>
                         <button type="button" class="btn btn-outline-danger btn-sm"
                             @click.prevent="deleteListItem(item)">
-                            <i class="iconoir-remove-empty"></i><span>Delete Item</span>
+                            <i class="iconoir-bin-minus"></i><span>Delete Item</span>
                         </button>
                     </div>
                 </div>

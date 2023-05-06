@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex">
-        <button class="btn btn-outline-primary btn-sm" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</button>
+        <button class="btn btn-outline-primary btn-sm" @click="router.go(-1)"><i class="iconoir-arrow-left-circle"></i>Go back</button>
         <div class="flex-fill"></div>
         <div class="btn-group" role="group" aria-label="Menu Options">
             <button v-if="can_edit" class="btn btn-outline-primary btn-sm" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</button>

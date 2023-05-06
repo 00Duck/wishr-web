@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex">
-        <button class="btn btn-outline-primary btn-sm" type="button" @click="router.go(-1)"><i class="iconoir-arrow-left-circled"></i>Go back</button>
+        <button class="btn btn-outline-primary btn-sm" type="button" @click="router.go(-1)"><i class="iconoir-arrow-left-circle"></i>Go back</button>
         <div class="flex-fill"></div>
         <div class="btn-group" role="group" aria-label="Menu Options">
             <button v-if="list.ID && list.ID != '' && list.IsOwner" type="button" class="btn btn-outline-danger btn-sm" @click="deleteList()"><i class="iconoir-remove-database-script"></i>Delete List</button>

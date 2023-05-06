@@ -18,12 +18,12 @@
                                 class="iconoir-add-database-script"></i>Create Wishlist</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{ 'name': 'profile' }" class="wl-link"><i class="iconoir-profile-circled"></i>My
+                        <router-link :to="{ 'name': 'profile' }" class="wl-link"><i class="iconoir-profile-circle"></i>My
                             Profile</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link :to="{ 'name': 'about' }" class="wl-link"><i
-                                class="iconoir-question-mark-circle"></i>About</router-link>
+                                class="iconoir-info-empty"></i>About</router-link>
                     </li>
                 </ul>
             </div>
