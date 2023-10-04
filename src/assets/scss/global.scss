@@ -2,30 +2,37 @@
 @import "bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-$body-bg: #efefef;
-
-
-// 3. Include remainder of required Bootstrap stylesheets
-@import "bootstrap/scss/variables";
-
-// 4. Include any default map overrides here
-$primary: #0059e3;
+$body-bg: #e1e6e8;
+$primary: #1d62d0;
 $secondary: #7487a2;
 $danger: #e40004;
+$custom-dark: #282e37; //this controls the navbar color mainly
 $theme-colors: (
   "primary": $primary,
   "secondary": $secondary,
   "danger": $danger,
+  "dark": $custom-dark
 );
 
+// 3. Include remainder of required Bootstrap stylesheets
+@import "bootstrap/scss/variables";
+
+
+// 4. Include any default map overrides here
 $card-border-radius: 10px;
 $card-border-width: 0;
 
+$toast-background-color: rgb(63, 65, 68);
+$toast-color: #FFF;
 
 // 5. Include remainder of required parts
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/root";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/toasts";
 
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/card";

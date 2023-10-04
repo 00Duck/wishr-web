@@ -3,7 +3,7 @@
     <div v-if="loading" class="wishr-loading"></div>
     <div v-else>
         <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }"
-            class="card my-3 d-flex flex-row align-items-center p-2 gap-1" v-for="item in list" :key="item.ID"
+            class="wl-list-item my-3 d-flex flex-row align-items-center p-2 gap-1" v-for="item in list" :key="item.ID"
             v-if="list.length > 0">
             <div class="wl-icon text-primary d-flex align-items-center me-2"><i class="iconoir-bookmark-book"></i></div>
             <div class="">
@@ -66,11 +66,14 @@ export default {
     font-size: 3rem;
 }
 
-.wl-content {
-    flex: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
+.wl-list-item {
+    text-decoration: none;
+    color: initial;
+}
+
+.wl-list-item:hover {
+    color: initial;
 }
 
 .wl-title {
@@ -101,20 +104,20 @@ export default {
     align-self: center;
     width: 100%;
     height: 250px;
-    background: #ddd;
+    background: #a5a5ab;
     margin: auto;
 }
 
-.wl-bg-sad {
-    mask: url(@/assets/sad-bg.svg);
+.wl-bg-share {
+    mask: url(@/assets/share.svg);
     mask-size: contain;
     mask-repeat: no-repeat;
     mask-position: center;
     display: flex;
     align-self: center;
     width: 100%;
-    height: 230px;
-    background: #ddd;
+    height: 220px;
+    background: #a5a5ab;
     margin: auto;
 }
 </style>

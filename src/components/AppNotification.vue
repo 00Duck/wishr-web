@@ -1,9 +1,7 @@
 <template>
-    <div v-show="msg.show" class="alert alert-dismissible wishr-alert" :class="{'alert-info': msg.type == 'info', 'alert-danger': msg.type == 'error'}">
+    <div v-show="msg.show" class="wl-notif" @click="closeBanner()">
+        <div class="d-flex"><i class="iconoir-info-empty" :class="{'theme-primary': msg.type == 'info', 'theme-delete': msg.type == 'error'}"></i></div>
         <div>{{msg.text}}</div>
-        <div class="wishr-msg-space"></div>
-        <!-- <div class="wishr-msg-close" @click="close()"><i class="iconoir-cancel"></i></div> -->
-        <button type="button" class="btn-close" aria-label="Close" @click="closeBanner()"></button>
     </div>
 </template>
 <script>
@@ -41,10 +39,31 @@ export default {
 }
 </script>
 <style>
-    .wishr-alert {
-        top: 0;
-        position: absolute !important;
-        z-index: 1;
+    .wl-notif {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        color: #FFF;
+        background-color: var(--bs-dark);
+        border-radius: 6px;
+        padding: 10px 20px;
+        margin: 0;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        display: flex;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        max-width: 400px;
         width: 100%;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+        .wl-notif {
+            bottom: 50px;
+        }
     }
 </style>

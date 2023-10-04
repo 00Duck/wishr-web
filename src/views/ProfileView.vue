@@ -1,7 +1,7 @@
 <template>
     <Nav></Nav>
-    <div class="container my-3">
-        <div class="card py-4">
+    <div class="wl-content">
+        <div class="card wl-card px-3 py-3">
             <h1 class="text-center">My Profile</h1>
             <div v-if="loading" class="wishr-loading" style="margin:10px auto;"></div>
             <div v-else-if="!profile">
@@ -27,8 +27,8 @@
                             <input type="text" class="form-control" v-model="profile.FullName" placeholder="Full name" disabled>
                             <label>Full name</label>
                         </div>
-                        <div class="d-flex flex-column gap-2 justify-content-center mt-4">
-                            <button type="button" @click.prevent="logOut()" class="btn btn-danger">
+                        <div class="d-flex flex-row gap-2 justify-content-center mt-4">
+                            <button type="button" @click.prevent="logOut()" class="btn btn-danger wl-logout-btn">
                                 <i class="iconoir-log-out"></i><span>Log Out</span>
                             </button>
                         </div>
@@ -162,6 +162,11 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.wl-logout-btn {
+    width: 100%;
+    max-width: 400px;
 }
 
 </style>

@@ -1,69 +1,71 @@
 <template>
     <Nav></Nav>
-    <div class="container my-3">
+    <div class="wl-content">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
-        <form v-else>
-            <div class="card p-4 my-3">
+        <form v-else class="card wl-card px-5 py-3">
+            <div>
                 <WLEditBar :list="list" class="mb-4"></WLEditBar>
-                <div class="form-floating mx-4">
-                    <input type="text" class="form-control" v-model="list.Name" placeholder="Wishlist name">
-                    <label class="text-primary">Wishlist name</label>
+                <div class="wishr-field">
+                    <label class="form-label">Wishlist name</label>
+                    <input type="text" v-model="list.Name" placeholder="">
                 </div>
             </div>
-            <div class="card px-5 py-3 my-3" v-for="item, index in list.Items" :key="item.ID">
+            <div v-for="item, index in list.Items" :key="item.ID" class="my-3">
                 <div class="d-flex flex-row">
                     <div class="flex-fill"></div>
                     <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
-                        <button type="button" class="btn btn-outline-primary btn-sm"
-                            @click.prevent="moveUp(item, index)" :disabled="index === 0">
+                        <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="moveUp(item, index)"
+                            :disabled="index === 0">
                             <i class="iconoir-arrow-up-circle"></i><span>Up</span>
                         </button>
-                        <button type="button" class="btn btn-outline-primary btn-sm"
-                            @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1">
+                        <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="moveDown(item, index)"
+                            :disabled="index === list.Items.length - 1">
                             <i class="iconoir-arrow-down-circle"></i><span>Down</span>
                         </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm"
-                            @click.prevent="deleteListItem(item)">
+                        <button type="button" class="btn btn-outline-danger btn-sm" @click.prevent="deleteListItem(item)">
                             <i class="iconoir-bin-minus"></i><span>Delete Item</span>
                         </button>
                     </div>
                 </div>
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" v-model="item.Name" placeholder="Item Name">
-                    <label class="text-primary">Item name</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" v-model="item.URL" placeholder="URL">
-                    <label class="text-primary">URL</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" v-model="item.Notes" placeholder="Notes">
-                    <label class="text-primary">Notes</label>
-                </div>
-                <div class="row g-2">
-                    <div class="col-6">
-                        <div class="form-floating mb-2">
-                            <input type="text" class="form-control" v-model="item.Price" placeholder="Price">
-                            <label class="text-primary">Price</label>
+                <div class="px-2">
+                    <div class="wishr-field">
+                        <label class="form-label">Item #{{ index + 1 }} name</label>
+                        <input type="text" v-model="item.Name" placeholder="">
+                    </div>
+                    <div class="wishr-field">
+                        <label class="form-label">URL</label>
+                        <input type="text" v-model="item.URL" placeholder="">
+                    </div>
+                    <div class="wishr-field">
+                        <label class="form-label">Notes</label>
+                        <input type="text" v-model="item.Notes" placeholder="">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="wishr-field">
+                                <label class="form-label">Price</label>
+                                <input type="text" v-model="item.Price" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="wishr-field">
+                                <label class="form-label">Quantity</label>
+                                <input type="text" min=1 max=100 @change="enforcePositive(item)" v-model="item.Quantity"
+                                    placeholder="">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-floating mb-2">
-                            <input type="text" min="1" max="100" @change="enforcePositive(item)" class="form-control"
-                                v-model="item.Quantity" placeholder="Quantity">
-                            <label class="text-primary">Quantity</label>
-                        </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Tooltip on top">Personal Item</label>
+                        <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
                     </div>
                 </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
-                    <label class="form-check-label text-primary" for="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">Personal Item</label>
-                </div>
+
             </div>
-            <div class="wl-sticky-space"></div>
-            <div v-if="list.IsOwner" class="wl-sticky-btn">
-                <div class="d-flex flex-column p-3 gap-2 justify-content-center wl-sticky-bg">
-                    <button type="button" class="btn btn-primary" @click.prevent="createListItem()"><i
+            <div v-if="list.IsOwner" class="py-3 px-3">
+                <div class="d-flex flex-row justify-content-center">
+                    <button type="button" class="btn btn-primary wl-add-item-btn" @click.prevent="createListItem()"><i
                             class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span
                             v-else>Add an item</span></button>
                 </div>
@@ -186,24 +188,23 @@ export default {
 }
 </script>
 
-<style>
-.wl-sticky-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+<style lang="scss">
+.form-label {
+    margin-bottom: 0rem;
 }
 
-.wl-sticky-space {
-    height: 3rem;
-}
-
-.wl-sticky-bg {
-    background-color: #FFFFFF;
-}
 
 .wl-info-icon {
     font-size: 16px !important;
     cursor: pointer;
+}
+
+.wl-add-item-btn {
+    width: 100%;
+    max-width: 400px;
+}
+
+div.wl-btn-row {
+    border-left: 0 !important;
 }
 </style>

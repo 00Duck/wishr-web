@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark bg-navbar-wishr wl-nav">
         <div class="container-fluid">
             <router-link :to="{ 'name': 'home' }" class="navbar-brand">
                 <div class="wishr-logo wl-nav-logo"></div>Wishr
@@ -11,7 +11,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <router-link :to="{'name': 'home'}" class="wl-link"><i class="iconoir-home-simple-door"></i>Home</router-link>
+                        <router-link :to="{ 'name': 'home' }" class="wl-link"><i
+                                class="iconoir-home-simple-door"></i>Home</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link :to="{ 'name': 'wl-create' }" class="wl-link"><i
@@ -45,15 +46,6 @@ export default {
     display: flex;
 }
 
-.wl-nav {
-    min-width: 215px;
-    color: #eee;
-    background-color: #212529;
-    padding: 16px;
-    height: initial;
-    position: relative;
-}
-
 .wl-link {
     display: block;
     padding: 12px;
@@ -71,10 +63,6 @@ export default {
     font-size: 22px;
 }
 
-.wl-nav .router-link-exact-active {
-    background-color: #0059e3;
-}
-
 .wl-nav h3 {
     font-size: 28px;
     padding: 0 0 16px 0;
@@ -88,7 +76,48 @@ export default {
 .wl-nav-logo {
     height: 30px;
     width: 30px;
-    background: white;
+    background: #FFF;
     margin-right: 15px;
+}
+
+.navbar-nav .router-link-exact-active {
+    color: #FFF!important;
+    background-color: var(--bs-link-hover-color);
+}
+
+.navbar-nav a:hover {
+    color: #FFF;
+    text-decoration-style:solid;
+    text-decoration-line: underline;
+}
+
+.navbar-collapse {
+    margin-top: 5px;
+}
+
+@media (min-width: 768px) {
+    .wl-nav {
+        position: fixed !important;
+        min-width: 200px;
+        max-width: 200px;
+        z-index: 1;
+        height: 100%;
+        padding-left: 10px !important;
+        left: 0;
+        top: 0;
+        align-content: flex-start;
+    }
+    .navbar-expand-md {
+        flex-wrap: wrap!important;
+        justify-content: flex-start;
+    }
+    .navbar-expand-md .navbar-nav {
+        flex-direction: column!important;
+        justify-content: flex-start;
+    }
+    .navbar .container-fluid {
+        flex-direction: column;
+        align-items: flex-start!important;
+    }
 }
 </style>
