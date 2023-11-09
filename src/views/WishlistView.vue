@@ -28,6 +28,7 @@
                 </div>
             </div>
 
+            <div class="row my-3" v-if="list.Items.length == 0">No items have been added yet. Edit the list and get wishing!</div>
             <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-3"
                 v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
                 <div class="col-md-10 col-xs-12 wl-img-txt-box">
