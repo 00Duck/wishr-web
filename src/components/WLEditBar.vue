@@ -3,11 +3,15 @@
         <button class="btn btn-outline-primary btn-sm" type="button" @click="router.go(-1)"><i
                 class="iconoir-arrow-left-circle"></i>Go back</button>
         <div class="flex-fill"></div>
-        <div class="btn-group" role="group" aria-label="Menu Options">
-            <button v-if="list.ID && list.ID != '' && list.IsOwner" type="button" class="btn btn-outline-danger btn-sm"
+        <div v-if="list.ID && list.ID != '' && list.IsOwner" class="btn-group" role="group" aria-label="Menu Options">
+            <button type="button" class="btn btn-outline-danger btn-sm"
                 @click="deleteList()"><i class="iconoir-remove-database-script"></i>Delete List</button>
-            <button v-if="list.IsOwner || list.ID == ''" type="button" class="btn btn-outline-primary btn-sm"
+            <button type="button" class="btn btn-outline-primary btn-sm"
                 @click="saveList()"><i class="iconoir-save-floppy-disk"></i>Save List</button>
+        </div>
+        <div v-if="list.ID == ''">
+            <button type="button" class="btn btn-outline-primary btn-sm"
+                @click="createList()"><i class="iconoir-add-database-script"></i>Create List</button>
         </div>
     </div>
 </template>
@@ -21,8 +25,24 @@ export default {
     props: ['list'],
     setup(props) {
         const router = useRouter()
+        async function createList() {
+            props.list.ItemCount = props.list.Items.length
+            if (!validForm()) return
+            await axios.post('/api/prot/wishlist', props.list)
+                .then(response => {
+                    EventBus.emit('notify', {
+                        type: 'info',
+                        text: 'Wishlist created!'
+                    })
+                    router.push({ name: "wl-edit", params: { id: response.data.Data } })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
         async function saveList() {
             props.list.ItemCount = props.list.Items.length
+            if (!validForm()) return
             await axios.post('/api/prot/wishlist', props.list)
                 .then(response => {
                     EventBus.emit('notify', {
@@ -51,7 +71,29 @@ export default {
                     })
             }
         }
-        return { router, saveList, deleteList }
+
+        function validForm() {
+            if (props.list.Name == '') {
+                EventBus.emit('notify', {
+                    type: 'error',
+                    text: 'You must enter a wishlist name.'
+                })
+                return false
+            }
+            for (let i = 0; i < props.list.Items.length; i++) {
+                let item = props.list.Items[i]
+                if (item.Name == '') {
+                    EventBus.emit('notify', {
+                        type: 'error',
+                        text: 'All wishlist items must have a name.'
+                    })
+                    return false
+                }
+            }
+            return true
+        }
+
+        return { router, createList, saveList, deleteList }
     }
 }
 </script>

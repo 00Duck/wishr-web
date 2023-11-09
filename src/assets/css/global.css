@@ -10,6 +10,11 @@
     }
 }
 
+.wl-required:after { /* adds an asterisk to required fields */
+    content: " *";
+    color: red;
+}
+
 .wl-card {
     margin: auto;
     width: 100%;

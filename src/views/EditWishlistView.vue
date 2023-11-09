@@ -6,13 +6,12 @@
             <div>
                 <WLEditBar :list="list" class="mb-4"></WLEditBar>
                 <div class="wishr-field">
-                    <label class="form-label">Wishlist name</label>
+                    <label class="form-label wl-required">Wishlist name</label>
                     <input type="text" v-model="list.Name" placeholder="">
                 </div>
             </div>
-            <div v-for="item, index in list.Items" :key="item.ID" class="my-3">
+            <div v-for="item, index in list.Items" :key="item.ID" class="my-5">
                 <div class="d-flex flex-row">
-                    <div class="flex-fill"></div>
                     <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
                         <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="moveUp(item, index)"
                             :disabled="index === 0">
@@ -26,10 +25,11 @@
                             <i class="iconoir-bin-minus"></i><span>Delete Item</span>
                         </button>
                     </div>
+                    <div class="flex-fill"></div>
                 </div>
                 <div class="px-2">
                     <div class="wishr-field">
-                        <label class="form-label">Item #{{ index + 1 }} name</label>
+                        <label class="form-label wl-required">Item #{{ index + 1 }} name</label>
                         <input type="text" v-model="item.Name" placeholder="">
                     </div>
                     <div class="wishr-field">
@@ -55,15 +55,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-check form-switch">
-                        <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Tooltip on top">Personal Item</label>
-                        <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Tooltip on top">Personal Item</label>
+                                <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
+                            </div>
+                        </div>
+                        <div class="col-6 wl-edit-list-browse">
+                            <img :src="getImageURL(item)" class="wl-list-img">
+                            <div class="wl-list-img-btns">
+                                <button type="button" class="btn btn-primary" @click.prevent="openImageUploader(index)">
+                                    <span>Add Image</span>
+                                </button>
+                                <button v-if="item.ImageURL" type="button" class="btn btn-danger" @click.prevent="removeImage(item)">
+                                    <span>Remove Image</span>
+                                </button>
+                                <input type="file" accept="image/*" :id="'imageHandler-' + index" @change="handleUpload($event, item)" hidden>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
-
             </div>
-            <div v-if="list.IsOwner" class="py-3 px-3">
+            <div v-if="list.IsOwner && list.ID != ''" class="py-3 px-3">
                 <div class="d-flex flex-row justify-content-center">
                     <button type="button" class="btn btn-primary wl-add-item-btn" @click.prevent="createListItem()"><i
                             class="iconoir-plus"></i><span v-if="list.Items.length > 0">Add another item</span><span
@@ -79,6 +94,8 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
+import axios from 'axios';
+import { EventBus } from '@/event-bus';
 import WLEditBar from '@/components/WLEditBar.vue'
 import Nav from '@/components/Nav.vue'
 
@@ -128,13 +145,20 @@ export default {
                 URL: "",
                 Notes: "",
                 Price: "",
+                ImageURL: "",
                 Quantity: 1,
                 Order: list.value.Items.length + 1,
                 PersonalItem: false
             })
         }
 
-        function deleteListItem(del_item) {
+        async function deleteListItem(del_item) {
+            if (del_item.ImageURL != '') {
+                await axios.post('/api/prot/images/delete', {ImageURL: del_item.ImageURL})
+                .catch(err => {
+                    console.log(err)
+                })
+            }
             list.value.Items = list.value.Items.filter((item) => {
                 return item != del_item
             })
@@ -183,7 +207,76 @@ export default {
             list.value.Items.sort((a, b) => a.Order - b.Order)
         }
 
-        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown }
+        function openImageUploader(itemID) {
+            document.getElementById("imageHandler-" + itemID).click()
+        }
+
+        async function handleUpload(event, item) {
+            if (item.ImageURL != '') {
+                await axios.post('/api/prot/images/delete', {ImageURL: item.ImageURL})
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+            const formData = new FormData()
+            const file = event.target.files[0]
+            formData.append("file", file)
+            let msgType = 'error'
+            let msgText = ''
+            await axios.post('/api/prot/images/wishlist_items/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                if (response.data.Message !== 'success') {
+                    msgType = 'error'
+                    msgText = response.data.Message
+                } else {
+                    msgType = 'info'
+                    msgText = 'Your image has been successfully uploaded.',
+                    item.ImageURL = response.data.Data
+                }
+                EventBus.emit('notify', {
+                    type: msgType,
+                    text: msgText,
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            if (msgType == 'info') { //do a save to make sure we capture the imageURL in the right spot
+                await axios.post('/api/prot/wishlist', list.value)
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+
+        function getImageURL(item) {
+            if (item.ImageURL != '') {
+                return '/api/open' + item.ImageURL
+            }
+            return ''
+        }
+
+        async function removeImage(item) {
+            try {
+                await axios.post('/api/prot/images/delete', {ImageURL: item.ImageURL})
+                .then(resp => {
+                    EventBus.emit('notify', {
+                        type: 'info',
+                        text: resp.data.Data,
+                    })
+                })
+                item.ImageURL = ''
+                await axios.post('/api/prot/wishlist', list.value)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown, handleUpload, getImageURL, openImageUploader, removeImage }
     }
 }
 </script>
@@ -206,5 +299,33 @@ export default {
 
 div.wl-btn-row {
     border-left: 0 !important;
+}
+
+.wl-list-img {
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.wl-list-img-btns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1%;
+}
+
+.wl-edit-list-browse {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.wl-edit-list-browse input {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    .wl-list-img-btns {
+        flex-direction: column;
+        gap: 2px;
+    }
 }
 </style>
