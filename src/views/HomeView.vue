@@ -5,11 +5,11 @@
       <ul class="nav nav-pills flex-row flex-nowrap justify-content-center" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="my-list-tab" data-bs-toggle="tab" data-bs-target="#my-list-tab-pane" type="button"
-            role="tab" aria-controls="my-list-tab-pane" aria-selected="false">My Wishlists</button>
+            role="tab" aria-controls="my-list-tab-pane" aria-selected="false" @click.prevent="setTabPref('my-list-tab')">My Wishlists</button>
         </li>
         <li class="nav-item active" role="presentation">
           <button class="nav-link" id="shared-list-tab" data-bs-toggle="tab" data-bs-target="#shared-list-tab-pane"
-            type="button" role="tab" aria-controls="shared-list-tab-pane" aria-selected="false">Shared with me</button>
+            type="button" role="tab" aria-controls="shared-list-tab-pane" aria-selected="false" @click.prevent="setTabPref('shared-list-tab')">Shared with me</button>
         </li>
         
         <!-- <li class="nav-item" role="presentation">
@@ -46,7 +46,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import List from '@/components/List.vue'
 import Nav from '@/components/Nav.vue'
 
@@ -54,6 +54,29 @@ export default {
   name: 'HomeView',
   components: { List, Nav },
   setup() {
+
+    onMounted(async () => {
+      try {
+        let tabPref = localStorage.getItem('wishlist_tab_preference')
+        if (!tabPref || tabPref == '') {
+          document.getElementById("my-list-tab").click()
+          return
+        }
+        document.getElementById(tabPref).click()
+      } catch(e) {
+        console.log(e)
+      }
+
+    })
+
+    function setTabPref(id) {
+      try {
+        localStorage.setItem('wishlist_tab_preference', id)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
     const my_lists_url = ref('/api/prot/wishlist')
     const my_wl_title = ref("My Wishlists")
     const my_list_empty = ref("There's nothing to see here yet. Create a new list to get started!")
@@ -66,7 +89,7 @@ export default {
 
     return {
       my_lists_url, my_wl_title, my_list_empty, my_list_bg,
-      shared_lists_url, shared_wl_title, shared_list_empty, shared_list_bg
+      shared_lists_url, shared_wl_title, shared_list_empty, shared_list_bg, setTabPref
     }
   }
 }
