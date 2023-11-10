@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex wl-action-bar-mobile">
-        <button class="btn btn-outline-primary btn-sm" @click="router.go(-1)"><i class="iconoir-arrow-left-circle"></i>Go back</button>
+        <button class="btn btn-outline-primary" @click="router.go(-1)"><i class="iconoir-arrow-left-circle"></i>Go back</button>
         <div class="flex-fill"></div>
         <div class="btn-group" role="group" aria-label="Menu Options">
-            <button v-if="can_edit" class="btn btn-outline-primary btn-sm" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</button>
-            <button v-if="can_edit" class="btn btn-outline-primary btn-sm" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</button>
+            <button v-if="can_edit" class="btn btn-outline-primary" @click="router.push({name: 'wl-edit', params: {id: id}})"><i class="iconoir-page-edit"></i>Edit List</button>
+            <button v-if="can_edit" class="btn btn-outline-primary" @click="$emit('openModal')"><i class="iconoir-share-android"></i>Share List</button>
         </div>
     </div>
 </template>
@@ -54,9 +54,18 @@ import { useRouter } from 'vue-router';
         height: 50px;
         left: 0;
         width: 100%;
-        background-color: white;
+        background-color: #282e37;
         padding: 5px;
         z-index: 1;
+        margin: 0;
+        top: initial;
+        border-bottom: 0;
+    }
+    .wl-action-bar-mobile button { 
+        background-color: #404652;
+        color: white;
+        border-color: #3d4451;
+        height: 100%;
     }
 }
 </style>

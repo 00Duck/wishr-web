@@ -1,16 +1,16 @@
 <template>
     <div class="d-flex wl-edit-bar-mobile">
-        <button class="btn btn-outline-primary btn-sm" type="button" @click="router.go(-1)"><i
+        <button class="btn btn-outline-primary" type="button" @click="router.go(-1)"><i
                 class="iconoir-arrow-left-circle"></i>Go back</button>
         <div class="flex-fill"></div>
         <div v-if="list.ID && list.ID != '' && list.IsOwner" class="btn-group" role="group" aria-label="Menu Options">
-            <button type="button" class="btn btn-outline-danger btn-sm"
+            <button type="button" class="btn btn-outline-danger"
                 @click="deleteList()"><i class="iconoir-remove-database-script"></i>Delete List</button>
-            <button type="button" class="btn btn-outline-primary btn-sm"
+            <button type="button" class="btn btn-outline-primary"
                 @click="saveList()"><i class="iconoir-save-floppy-disk"></i>Save List</button>
         </div>
         <div v-if="list.ID == ''">
-            <button type="button" class="btn btn-outline-primary btn-sm"
+            <button type="button" class="btn btn-outline-primary"
                 @click="createList()"><i class="iconoir-add-database-script"></i>Create List</button>
         </div>
     </div>
@@ -129,13 +129,23 @@ export default {
 @media (max-width: 768px) {
     .wl-edit-bar-mobile {
         position: fixed;
-        bottom: -24px;
         height: 50px;
+        bottom: 0;
+        top:auto;
         left: 0;
         width: 100%;
-        background-color: white;
+        background-color: #282e37;
         padding: 5px;
         z-index: 1;
+        margin: 0!important;
+        top: initial;
+        border-bottom: 0;
+    }
+    .wl-edit-bar-mobile button { 
+        background-color: #404652;
+        color: white;
+        border-color: #3d4451;
+        height: 100%;
     }
 }
 

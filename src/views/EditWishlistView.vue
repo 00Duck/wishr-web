@@ -5,6 +5,8 @@
         <form v-else class="card wl-card px-5 py-3">
             <div>
                 <WLEditBar :list="list" class="mb-4"></WLEditBar>
+                <h2 v-if="list.ID != ''" class="d-flex align-content-center justify-content-center">Edit List</h2>
+                <h2 v-else class="d-flex align-content-center justify-content-center">Create List</h2>
                 <div class="wishr-field">
                     <label class="form-label wl-required">Wishlist name</label>
                     <input type="text" v-model="list.Name" placeholder="">
@@ -68,10 +70,10 @@
                             <div class="col-6 wl-edit-list-browse">
                                 <img :src="getImageURL(item)" class="wl-list-img">
                                 <div class="wl-list-img-btns">
-                                    <button type="button" class="btn btn-primary" @click.prevent="openImageUploader(index)">
-                                        <span>Add Image</span>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="openImageUploader(index)">
+                                        <span>Upload Image</span>
                                     </button>
-                                    <button v-if="item.ImageURL" type="button" class="btn btn-danger"
+                                    <button v-if="item.ImageURL" type="button" class="btn btn-outline-secondary btn-sm"
                                         @click.prevent="removeImage(item)">
                                         <span>Remove Image</span>
                                     </button>
