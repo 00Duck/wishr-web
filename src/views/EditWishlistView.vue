@@ -10,74 +10,79 @@
                     <input type="text" v-model="list.Name" placeholder="">
                 </div>
             </div>
-            <div v-for="item, index in list.Items" :key="item.ID" class="my-5">
-                <div class="d-flex flex-row">
-                    <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
-                        <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="moveUp(item, index)"
-                            :disabled="index === 0">
-                            <i class="iconoir-arrow-up-circle"></i><span>Up</span>
-                        </button>
-                        <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="moveDown(item, index)"
-                            :disabled="index === list.Items.length - 1">
-                            <i class="iconoir-arrow-down-circle"></i><span>Down</span>
-                        </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm" @click.prevent="deleteListItem(item)">
-                            <i class="iconoir-bin-minus"></i><span>Delete Item</span>
-                        </button>
+            <transition-group name="itemlist">
+                <div v-for="item, index in list.Items" :key="item.RowKey" class="my-5 wl-list-item-cont">
+                    <div class="d-flex flex-row">
+                        <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                @click.prevent="moveUp(item, index)" :disabled="index === 0">
+                                <i class="iconoir-arrow-up-circle"></i><span>Up</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1">
+                                <i class="iconoir-arrow-down-circle"></i><span>Down</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                @click.prevent="deleteListItem(item)">
+                                <i class="iconoir-bin-minus"></i><span>Delete Item</span>
+                            </button>
+                        </div>
+                        <div class="flex-fill"></div>
                     </div>
-                    <div class="flex-fill"></div>
+                    <div class="px-2">
+                        <div class="wishr-field">
+                            <label class="form-label wl-required">Item #{{ index + 1 }} name</label>
+                            <input type="text" v-model="item.Name" placeholder="">
+                        </div>
+                        <div class="wishr-field">
+                            <label class="form-label">URL</label>
+                            <input type="text" v-model="item.URL" placeholder="">
+                        </div>
+                        <div class="wishr-field">
+                            <label class="form-label">Notes</label>
+                            <input type="text" v-model="item.Notes" placeholder="">
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="wishr-field">
+                                    <label class="form-label">Price</label>
+                                    <input type="text" v-model="item.Price" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="wishr-field">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="text" min=1 max=100 @change="enforcePositive(item)" v-model="item.Quantity"
+                                        placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tooltip on top">Personal Item</label>
+                                    <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
+                                </div>
+                            </div>
+                            <div class="col-6 wl-edit-list-browse">
+                                <img :src="getImageURL(item)" class="wl-list-img">
+                                <div class="wl-list-img-btns">
+                                    <button type="button" class="btn btn-primary" @click.prevent="openImageUploader(index)">
+                                        <span>Add Image</span>
+                                    </button>
+                                    <button v-if="item.ImageURL" type="button" class="btn btn-danger"
+                                        @click.prevent="removeImage(item)">
+                                        <span>Remove Image</span>
+                                    </button>
+                                    <input type="file" accept="image/*" :id="'imageHandler-' + index"
+                                        @change="handleUpload($event, item)" hidden>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="px-2">
-                    <div class="wishr-field">
-                        <label class="form-label wl-required">Item #{{ index + 1 }} name</label>
-                        <input type="text" v-model="item.Name" placeholder="">
-                    </div>
-                    <div class="wishr-field">
-                        <label class="form-label">URL</label>
-                        <input type="text" v-model="item.URL" placeholder="">
-                    </div>
-                    <div class="wishr-field">
-                        <label class="form-label">Notes</label>
-                        <input type="text" v-model="item.Notes" placeholder="">
-                    </div>
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <div class="wishr-field">
-                                <label class="form-label">Price</label>
-                                <input type="text" v-model="item.Price" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="wishr-field">
-                                <label class="form-label">Quantity</label>
-                                <input type="text" min=1 max=100 @change="enforcePositive(item)" v-model="item.Quantity"
-                                    placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <div class="form-check form-switch">
-                                <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Tooltip on top">Personal Item</label>
-                                <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
-                            </div>
-                        </div>
-                        <div class="col-6 wl-edit-list-browse">
-                            <img :src="getImageURL(item)" class="wl-list-img">
-                            <div class="wl-list-img-btns">
-                                <button type="button" class="btn btn-primary" @click.prevent="openImageUploader(index)">
-                                    <span>Add Image</span>
-                                </button>
-                                <button v-if="item.ImageURL" type="button" class="btn btn-danger" @click.prevent="removeImage(item)">
-                                    <span>Remove Image</span>
-                                </button>
-                                <input type="file" accept="image/*" :id="'imageHandler-' + index" @change="handleUpload($event, item)" hidden>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
+            </transition-group>
             <div v-if="list.IsOwner && list.ID != ''" class="py-3 px-3">
                 <div class="d-flex flex-row justify-content-center">
                     <button type="button" class="btn btn-primary wl-add-item-btn" @click.prevent="createListItem()"><i
@@ -128,6 +133,7 @@ export default {
                     data = await data.json()
                     list.value = data.Data
                     setListItemOrder(list.value)
+                    setRowKeysWhereEmpty(list.value)
                 } catch (err) {
                     list_err.value = err.message
                 } finally {
@@ -148,16 +154,17 @@ export default {
                 ImageURL: "",
                 Quantity: 1,
                 Order: list.value.Items.length + 1,
-                PersonalItem: false
+                PersonalItem: false,
+                RowKey: generateRowKey()
             })
         }
 
         async function deleteListItem(del_item) {
             if (del_item.ImageURL != '') {
-                await axios.post('/api/prot/images/delete', {ImageURL: del_item.ImageURL})
-                .catch(err => {
-                    console.log(err)
-                })
+                await axios.post('/api/prot/images/delete', { ImageURL: del_item.ImageURL })
+                    .catch(err => {
+                        console.log(err)
+                    })
             }
             list.value.Items = list.value.Items.filter((item) => {
                 return item != del_item
@@ -189,6 +196,15 @@ export default {
             }
         }
 
+        //ensures we have a unique ID for all rows so that transition animations work
+        function setRowKeysWhereEmpty(list) {
+            if (!list.hasOwnProperty('Items')) { return }
+            for (let i = 0; i < list.Items.length; i++) {
+                if (list.Items[i].RowKey == '') list.Items[i].RowKey = generateRowKey()
+            }
+        console.log(list)
+        }
+
         function moveUp(item, index) {
             if (index === 0) { return }
 
@@ -213,10 +229,10 @@ export default {
 
         async function handleUpload(event, item) {
             if (item.ImageURL != '') {
-                await axios.post('/api/prot/images/delete', {ImageURL: item.ImageURL})
-                .catch(err => {
-                    console.log(err)
-                })
+                await axios.post('/api/prot/images/delete', { ImageURL: item.ImageURL })
+                    .catch(err => {
+                        console.log(err)
+                    })
             }
             const formData = new FormData()
             const file = event.target.files[0]
@@ -228,28 +244,28 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(response => {
-                if (response.data.Message !== 'success') {
-                    msgType = 'error'
-                    msgText = response.data.Message
-                } else {
-                    msgType = 'info'
-                    msgText = 'Your image has been successfully uploaded.',
-                    item.ImageURL = response.data.Data
-                }
-                EventBus.emit('notify', {
-                    type: msgType,
-                    text: msgText,
+                .then(response => {
+                    if (response.data.Message !== 'success') {
+                        msgType = 'error'
+                        msgText = response.data.Message
+                    } else {
+                        msgType = 'info'
+                        msgText = 'Your image has been successfully uploaded.',
+                            item.ImageURL = response.data.Data
+                    }
+                    EventBus.emit('notify', {
+                        type: msgType,
+                        text: msgText,
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            if (msgType == 'info') { //do a save to make sure we capture the imageURL in the right spot
-                await axios.post('/api/prot/wishlist', list.value)
                 .catch(err => {
                     console.log(err)
                 })
+            if (msgType == 'info') { //do a save to make sure we capture the imageURL in the right spot
+                await axios.post('/api/prot/wishlist', list.value)
+                    .catch(err => {
+                        console.log(err)
+                    })
             }
         }
 
@@ -262,18 +278,28 @@ export default {
 
         async function removeImage(item) {
             try {
-                await axios.post('/api/prot/images/delete', {ImageURL: item.ImageURL})
-                .then(resp => {
-                    EventBus.emit('notify', {
-                        type: 'info',
-                        text: resp.data.Data,
+                await axios.post('/api/prot/images/delete', { ImageURL: item.ImageURL })
+                    .then(resp => {
+                        EventBus.emit('notify', {
+                            type: 'info',
+                            text: resp.data.Data,
+                        })
                     })
-                })
                 item.ImageURL = ''
                 await axios.post('/api/prot/wishlist', list.value)
             } catch (e) {
                 console.log(e)
             }
+        }
+
+        function generateRowKey() {
+            let str = (Math.random() * 10 ** 10) * (performance.now()) + new Date().toISOString()
+            let hash = 0
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i)
+                hash |= 0
+            }
+            return Math.abs(hash) + ''
         }
 
         return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown, handleUpload, getImageURL, openImageUploader, removeImage }
@@ -282,6 +308,23 @@ export default {
 </script>
 
 <style lang="scss">
+
+/* Transitions for itemlist transition group */
+.wl-list-item-cont {
+    background-color: #FFF;
+}
+.itemlist-move, .itemlist-enter-active, .itemlist-leave-active {
+    transition: all 0.5s ease;
+}
+.itemlist-enter-from, .itemlist-leave-to {
+    opacity: 0;
+    transform: translateX(-1000px);
+}
+.itemlist-leave-active {
+    position: absolute;
+}
+/* END ANIMATION */
+
 .form-label {
     margin-bottom: 0rem;
 }
@@ -318,6 +361,7 @@ div.wl-btn-row {
     flex-direction: column;
     gap: 10px;
 }
+
 .wl-edit-list-browse input {
     color: red;
 }
@@ -327,5 +371,4 @@ div.wl-btn-row {
         flex-direction: column;
         gap: 2px;
     }
-}
-</style>
+}</style>
