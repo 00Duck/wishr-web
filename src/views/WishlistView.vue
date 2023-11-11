@@ -32,7 +32,7 @@
             <div v-for="item in list.Items" :key="item.ID" class="row justify-content-between my-3"
                 v-show="!item.PersonalItem || (item.PersonalItem && list.IsOwner)">
                 <div class="col-md-10 col-xs-12 wl-img-txt-box">
-                    <img :src="getImageURL(item)" class="wl-list-img">
+                    <div class="wl-view-img-box"><img :src="getImageURL(item)" class="wl-list-img"></div>
                     <div>
                         <div class="fs-4">{{ item.Name }}</div>
                         <div class="fs-6 fw-lighter mb-2">{{ item.Notes }}</div>
@@ -213,7 +213,21 @@ export default {
     max-height: 80px;
 }
 
+/* keeps all images centered within the box, and adds space when the image isn't exactly 80x80 */
+.wl-view-img-box {
+    min-height: 80px;
+    min-width: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
+    .wl-view-img-box {
+        max-height: 200px;
+        max-width: 200px;
+        align-self: center;
+    }
     .wl-list-img {
         max-width: 100%;
         max-height: 200px;
@@ -226,6 +240,5 @@ export default {
         align-self: center;
     }
 }
-
 
 </style>
