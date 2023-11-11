@@ -23,7 +23,7 @@ import { EventBus } from '@/event-bus';
 
 export default {
     props: ['list'],
-    setup(props) {
+    setup(props, context) {
         const router = useRouter()
         async function createList() {
             props.list.ItemCount = props.list.Items.length
@@ -43,6 +43,7 @@ export default {
         async function saveList() {
             props.list.ItemCount = props.list.Items.length
             if (!validForm()) return
+            context.emit('leaveForm')
             await axios.post('/api/prot/wishlist', props.list)
                 .then(response => {
                     EventBus.emit('notify', {
@@ -58,6 +59,7 @@ export default {
 
         async function deleteList() {
             if (confirm("Are you sure you want to delete this list?")) {
+                context.emit('leaveForm')
                 await axios.delete('/api/prot/wishlist/' + props.list.ID)
                     .then(response => {
                         EventBus.emit('notify', {

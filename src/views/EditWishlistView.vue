@@ -4,51 +4,63 @@
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
         <form v-else class="card wl-card px-5 py-3">
             <div>
-                <WLEditBar :list="list" class="mb-4"></WLEditBar>
+                <WLEditBar :list="list" @leaveForm="leaveForm()" class="mb-4"></WLEditBar>
                 <h2 v-if="list.ID != ''" class="d-flex align-content-center justify-content-center">Edit List</h2>
                 <h2 v-else class="d-flex align-content-center justify-content-center">Create List</h2>
                 <div class="wishr-field">
                     <label class="form-label wl-required">Wishlist name</label>
-                    <input type="text" v-model="list.Name" placeholder="">
+                    <input type="text" v-model="list.Name" placeholder="" @change="has_changes = true">
                 </div>
             </div>
             <transition-group name="itemlist">
                 <div v-for="item, index in list.Items" :key="item.RowKey" class="my-5 wl-list-item-cont">
+
                     <div class="d-flex flex-row">
-                        <div v-if="list.IsOwner" class="btn-group mb-4" role="group" aria-label="List order menu">
-                            <button type="button" class="btn btn-outline-primary btn-sm"
+                        <div v-if="list.IsOwner" class="d-flex gap-1 mb-4">
+                            <button type="button" class="btn btn-outline-primary btn-sm d-flex align-items-center"
                                 @click.prevent="moveUp(item, index)" :disabled="index === 0">
-                                <i class="iconoir-arrow-up-circle"></i><span>Up</span>
+                                <span class="iconoir-arrow-up-circle"></span>
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
+                            <button type="button" class="btn btn-outline-primary btn-sm d-flex align-items-center"
                                 @click.prevent="moveDown(item, index)" :disabled="index === list.Items.length - 1">
-                                <i class="iconoir-arrow-down-circle"></i><span>Down</span>
+                                <span class="iconoir-arrow-down-circle"></span>
                             </button>
-                            <button type="button" class="btn btn-outline-danger btn-sm"
-                                @click.prevent="deleteListItem(item)">
+
+                            <div class="dropdown mx-2">
+                                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="iconoir-more-horiz"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="#" @click.prevent="deleteListItem(item)">Delete
+                                            Item</a></li>
+                                    <!-- <li><a class="dropdown-item" href="#"><span disabled>Move to Wishlist...</span></a></li> -->
+                                </ul>
+                            </div>
+                            <!-- <button type="button" class="btn btn-outline-danger btn-sm" @click.prevent="deleteListItem(item)">
                                 <i class="iconoir-bin-minus"></i><span>Delete Item</span>
-                            </button>
+                            </button> -->
                         </div>
                         <div class="flex-fill"></div>
                     </div>
                     <div class="px-2">
                         <div class="wishr-field">
                             <label class="form-label wl-required">Item #{{ index + 1 }} name</label>
-                            <input type="text" v-model="item.Name" placeholder="">
+                            <input type="text" v-model="item.Name" placeholder="" @change="has_changes = true">
                         </div>
                         <div class="wishr-field">
                             <label class="form-label">URL</label>
-                            <input type="text" v-model="item.URL" placeholder="">
+                            <input type="text" v-model="item.URL" placeholder="" @change="has_changes = true">
                         </div>
                         <div class="wishr-field">
                             <label class="form-label">Notes</label>
-                            <input type="text" v-model="item.Notes" placeholder="">
+                            <input type="text" v-model="item.Notes" placeholder="" @change="has_changes = true">
                         </div>
                         <div class="row g-2">
                             <div class="col-6">
                                 <div class="wishr-field">
                                     <label class="form-label">Price</label>
-                                    <input type="text" v-model="item.Price" placeholder="">
+                                    <input type="text" v-model="item.Price" placeholder="" @change="has_changes = true">
                                 </div>
                             </div>
                             <div class="col-6">
@@ -64,13 +76,14 @@
                                 <div class="form-check form-switch">
                                     <label class="form-check-label" for="" data-bs-toggle="tooltip" data-bs-placement="top"
                                         data-bs-title="Tooltip on top">Personal Item</label>
-                                    <input class="form-check-input" type="checkbox" v-model="item.PersonalItem">
+                                    <input class="form-check-input" type="checkbox" v-model="item.PersonalItem" @change="has_changes = true">
                                 </div>
                             </div>
                             <div class="col-6 wl-edit-list-browse">
                                 <img :src="getImageURL(item)" class="wl-list-img">
                                 <div class="wl-list-img-btns">
-                                    <button type="button" class="btn btn-outline-primary btn-sm" @click.prevent="openImageUploader(index)">
+                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                        @click.prevent="openImageUploader(index)">
                                         <span>Upload Image</span>
                                     </button>
                                     <button v-if="item.ImageURL" type="button" class="btn btn-outline-secondary btn-sm"
@@ -108,6 +121,12 @@ import Nav from '@/components/Nav.vue'
 
 export default {
     components: { WLEditBar, Nav },
+    beforeRouteLeave(to, from) {
+        if (this.has_changes) {
+            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            if (!answer) return false
+        }
+    },
     setup() {
         const route = useRoute()
         const list = ref({
@@ -122,6 +141,7 @@ export default {
         const list_id = ref(route.params.id)
         const list_err = ref(null)
         const loading = ref(true)
+        const has_changes = ref(false)
 
         onMounted(async () => {
             //If there's no ID, we're in "create mode". Else we're in edit mode
@@ -159,9 +179,14 @@ export default {
                 PersonalItem: false,
                 RowKey: generateRowKey()
             })
+            has_changes.value = true
         }
 
         async function deleteListItem(del_item) {
+            if (!confirm("Are you sure you want to delete this item?")) {
+                return
+            }
+            has_changes.value = true
             if (del_item.ImageURL != '') {
                 await axios.post('/api/prot/images/delete', { ImageURL: del_item.ImageURL })
                     .catch(err => {
@@ -188,6 +213,7 @@ export default {
             if (item.Quantity > 100) {
                 item.Quantity = 100
             }
+            has_changes.value = true
         }
 
         //ensures the list remains properly ordered. However it comes in is the new, trusted order
@@ -204,7 +230,7 @@ export default {
             for (let i = 0; i < list.Items.length; i++) {
                 if (list.Items[i].RowKey == '') list.Items[i].RowKey = generateRowKey()
             }
-        console.log(list)
+            console.log(list)
         }
 
         function moveUp(item, index) {
@@ -214,6 +240,7 @@ export default {
             list.value.Items[index - 1].Order = index + 1
 
             list.value.Items.sort((a, b) => a.Order - b.Order)
+            has_changes.value = true
         }
 
         function moveDown(item, index) {
@@ -223,6 +250,7 @@ export default {
             list.value.Items[index + 1].Order = index + 1
 
             list.value.Items.sort((a, b) => a.Order - b.Order)
+            has_changes.value = true
         }
 
         function openImageUploader(itemID) {
@@ -254,6 +282,7 @@ export default {
                         msgType = 'info'
                         msgText = 'Your image has been successfully uploaded.',
                             item.ImageURL = response.data.Data
+                        has_changes.value = true
                     }
                     EventBus.emit('notify', {
                         type: msgType,
@@ -304,27 +333,37 @@ export default {
             return Math.abs(hash) + ''
         }
 
-        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown, handleUpload, getImageURL, openImageUploader, removeImage }
+        function leaveForm() {
+            has_changes.value = false
+        }
+
+        return { list, list_err, createListItem, deleteListItem, loading, enforcePositive, moveUp, moveDown, handleUpload, getImageURL, openImageUploader, removeImage, has_changes, leaveForm }
     }
 }
 </script>
 
 <style lang="scss">
-
 /* Transitions for itemlist transition group */
 .wl-list-item-cont {
     background-color: #FFF;
 }
-.itemlist-move, .itemlist-enter-active, .itemlist-leave-active {
+
+.itemlist-move,
+.itemlist-enter-active,
+.itemlist-leave-active {
     transition: all 0.5s ease;
 }
-.itemlist-enter-from, .itemlist-leave-to {
+
+.itemlist-enter-from,
+.itemlist-leave-to {
     opacity: 0;
     transform: translateX(-1000px);
 }
+
 .itemlist-leave-active {
     position: absolute;
 }
+
 /* END ANIMATION */
 
 .form-label {
@@ -373,4 +412,5 @@ div.wl-btn-row {
         flex-direction: column;
         gap: 2px;
     }
-}</style>
+}
+</style>
