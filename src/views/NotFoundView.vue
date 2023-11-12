@@ -1,6 +1,6 @@
 <template>
-    <div class="wl-content">
-        <div class="card wl-card px-5 py-3 wl-not-found-container">
+    <div class="container-md">
+        <div class="card my-5 pb-5 mx-auto wl-not-found-container">
             <h1>404 Not Found</h1>
             <div class="wl-not-found-bg"></div>
             <p>Whatever you were trying to do didn't work.</p>

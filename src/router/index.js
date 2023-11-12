@@ -19,6 +19,11 @@ const routes = [
     component: () => import(/* webpackChungName: "register" */ '../views/RegisterView.vue')
   },
   {
+    path: '/passwordreset/:token',
+    name: 'passwordreset',
+    component: () => import(/* webpackChungName: "resetpassword" */ '../views/PasswordResetView.vue')
+  },
+  {
     path: '/wishlist/create',
     name: 'wl-create',
     component: () => import(/* webpackChunkName: "wl-create" */ '../views/CreateWishlistView.vue')
