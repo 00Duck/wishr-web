@@ -53,6 +53,7 @@ import { useRouter } from 'vue-router';
         padding: 5px 0px;
         background-color: white;
         width: 100%;
+        z-index: 2;
     }
 
     @media (max-width: 768px) {
