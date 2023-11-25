@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import WLActionBar from '@/components/WLActionBar.vue'
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
@@ -75,6 +75,8 @@ import Nav from '@/components/Nav.vue'
 import ShareModal from '@/components/ShareModal.vue'
 import axios from 'axios';
 import { EventBus } from '@/event-bus';
+import debounce from 'lodash/debounce';
+
 
 export default {
     components: { WLActionBar, Nav, ShareModal },
@@ -89,7 +91,13 @@ export default {
         const current_user = ref(getCurrentUser())
 
         onMounted(async () => {
+            let debounceScroll = debounce(scrollActionMenu, 50)
+            window.addEventListener('scroll', debounceScroll)
             refresh()
+        })
+
+        onUnmounted(async() => {
+            window.removeEventListener('scroll', debounceScroll)
         })
 
         async function refresh() {
@@ -103,6 +111,11 @@ export default {
                 .finally(() => {
                     loading.value = false
                 })
+        }
+
+        function scrollActionMenu(event) {
+            let el = document.querySelector('.wl-action-bar-mobile')
+            window.scrollY > 50 ? el.classList.add('wl-action-bar-sticky') : el.classList.remove('wl-action-bar-sticky')
         }
 
         function getImageURL(item) {

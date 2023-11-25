@@ -3,15 +3,13 @@
     <div class="wl-content">
         <div v-if="loading" class="wishr-loading" style="margin-top:10vh;"></div>
         <form v-else class="card wl-card px-5 py-3">
-            <div>
-                <WLEditBar :list="list" @leaveForm="leaveForm()" class="mb-4"></WLEditBar>
+            <WLEditBar :list="list" @leaveForm="leaveForm()" class="mb-4"></WLEditBar>
                 <h2 v-if="list.ID != ''" class="d-flex align-content-center justify-content-center">Edit List</h2>
                 <h2 v-else class="d-flex align-content-center justify-content-center">Create List</h2>
                 <div class="wishr-field">
                     <label class="form-label wl-required">Wishlist name</label>
                     <input type="text" v-model="list.Name" placeholder="" @change="has_changes = true">
                 </div>
-            </div>
             <transition-group name="itemlist">
                 <div v-for="item, index in list.Items" :key="item.RowKey" class="my-5 wl-list-item-cont">
 
@@ -111,13 +109,14 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import axios from 'axios';
 import { EventBus } from '@/event-bus';
 import WLEditBar from '@/components/WLEditBar.vue'
 import Nav from '@/components/Nav.vue'
+import debounce from 'lodash/debounce'
 
 export default {
     components: { WLEditBar, Nav },
@@ -144,6 +143,8 @@ export default {
         const has_changes = ref(false)
 
         onMounted(async () => {
+            let debounceScroll = debounce(scrollEditMenu, 50)
+            window.addEventListener('scroll', debounceScroll)
             //If there's no ID, we're in "create mode". Else we're in edit mode
             // and need to fetch the ID of the list to edit
             if (list_id.value) {
@@ -165,6 +166,16 @@ export default {
                 loading.value = false
             }
         })
+
+        onUnmounted(async () => {
+            window.removeEventListener('scroll', debounceScroll)
+        })
+
+        function scrollEditMenu(event) {
+            let el = document.querySelector('.wl-edit-bar-mobile')
+            console.log(window.scrollY)
+            window.scrollY > 50 ? el.classList.add('wl-edit-bar-sticky') : el.classList.remove('wl-edit-bar-sticky')
+        }
 
         function createListItem() {
             list.value.Items.push({

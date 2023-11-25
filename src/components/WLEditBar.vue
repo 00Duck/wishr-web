@@ -128,6 +128,16 @@ export default {
 .wl-edit-bar .wl-space {
     flex: 100%;
 }
+
+.wl-edit-bar-sticky {
+    position: sticky;
+    top: 0;
+    padding: 5px 0px;
+    background-color: white;
+    width: 100%;
+    z-index: 2;
+}
+
 @media (max-width: 768px) {
     .wl-edit-bar-mobile {
         position: fixed;

@@ -47,6 +47,14 @@ import { useRouter } from 'vue-router';
         flex: 100%;
     }
 
+    .wl-action-bar-sticky {
+        position: sticky;
+        top: 0;
+        padding: 5px 0px;
+        background-color: white;
+        width: 100%;
+    }
+
     @media (max-width: 768px) {
     .wl-action-bar-mobile {
         position: fixed;
