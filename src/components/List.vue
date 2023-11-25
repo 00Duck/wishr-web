@@ -1,24 +1,23 @@
 <template>
-    <h2 class="h2 my-4">{{ title }}</h2>
+    <h2 class="h2 my-4" style="font-style:italic;">{{ title }}</h2>
     <div v-if="loading" class="wishr-loading"></div>
     <div v-else>
         <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }"
-            class="wl-list-item my-3 d-flex flex-row align-items-center p-2 gap-1" v-for="item in list" :key="item.ID"
+            class="wl-list-item card d-flex flex-row my-3 p-2 gap-1" v-for="item in list" :key="item.ID"
             v-if="list.length > 0">
             <div class="wl-icon text-primary d-flex align-items-center me-2"><i class="iconoir-bookmark-book"></i></div>
-            <div class="">
-                <div class="h3">{{ item.Name }}</div>
-                <div class="d-flex flex-column flex-wrap" >
+            <div class="wl-list-item-content">
+                <div class="d-flex flex-column flex-wrap">
+                    <div class="h3">{{ item.Name }}</div>
                     <small class="text-muted">Last updated {{ new Date(item.UpdatedAt).toDateString() }}</small>
                     <small class="text-primary fs-6" v-if="!item.IsOwner"><b>Shared by {{ item.OwnerFullName }}</b></small>
                 </div>
-            </div>
-            <div class="flex-fill"></div>
-            <div class="align-self-start">
-                <h5>
+                <div class="flex-fill"></div>
+                <h5 class="wl-list-item-count">
                     <div class="badge bg-secondary">{{ item.ItemCount }} Items</div>
                 </h5>
             </div>
+
         </router-link>
         <div v-if="list.length === 0 && list_err === null">
             <div :class="bg"></div>
@@ -28,7 +27,6 @@
             <div>{{ list_err }}</div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -74,6 +72,22 @@ export default {
 
 .wl-list-item:hover {
     color: initial;
+}
+
+.wl-list-item-content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .wl-list-item-content {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    .wl-list-item-count {
+        align-self:flex-end;
+    }
 }
 
 .wl-title {

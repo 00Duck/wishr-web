@@ -7,6 +7,7 @@
     .wl-content {
         margin-left: 0;
         margin-bottom: 50px; /* adds space for bottom bar on some views */
+        padding: 13px;
     }
 }
 
@@ -18,7 +19,7 @@
 .wl-card {
     margin: auto;
     width: 100%;
-    max-width: 1296px;
+    max-width: 1266px; /* 1296 - 30 from nav */
 }
 
 .theme-primary {

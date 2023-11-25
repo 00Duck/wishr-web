@@ -64,7 +64,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  const bypass = ['login', 'register', 'NotFound']
+  const bypass = ['login', 'register', 'NotFound', 'passwordreset']
   if (bypass.indexOf(to.name) !== -1) {
     return
   }
