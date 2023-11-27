@@ -3,11 +3,11 @@
   <div class="wl-content">
     <div class="wl-card py-3">
       <ul class="nav nav-pills flex-row flex-nowrap justify-content-center" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item z-1" role="presentation">
           <button class="nav-link active" id="my-list-tab" data-bs-toggle="tab" data-bs-target="#my-list-tab-pane" type="button"
             role="tab" aria-controls="my-list-tab-pane" aria-selected="false" @click.prevent="setTabPref('my-list-tab')">My Wishlists</button>
         </li>
-        <li class="nav-item active" role="presentation">
+        <li class="nav-item z-1" role="presentation">
           <button class="nav-link" id="shared-list-tab" data-bs-toggle="tab" data-bs-target="#shared-list-tab-pane"
             type="button" role="tab" aria-controls="shared-list-tab-pane" aria-selected="false" @click.prevent="setTabPref('shared-list-tab')">Shared with me</button>
         </li>
@@ -21,7 +21,7 @@
         <div class="tab-pane fade show active" id="my-list-tab-pane" role="tabpanel" aria-labelledby="my-list-tab" tabindex="0">
           <List :list_url="my_lists_url" :title="my_wl_title" :list_empty_msg="my_list_empty" :bg="my_list_bg"></List>
           <div class="d-flex justify-content-center">
-            <button class="btn btn-primary" @click.prevent="goCreateWishlist()"><i class="iconoir-database-script"></i>Create a Wishlist!</button>
+            <button class="btn btn-primary z-1" @click.prevent="goCreateWishlist()"><i class="iconoir-database-script"></i>Create a Wishlist!</button>
           </div>
         </div>
         <div class="tab-pane fade" id="shared-list-tab-pane" role="tabpanel" aria-labelledby="shared-list-tab"
@@ -106,8 +106,5 @@ export default {
 <style>
 button.nav-link {
   font-size: calc(.80rem + .3vw) !important;
-}
-.nav-item {
-  z-index: 1;
 }
 </style>
