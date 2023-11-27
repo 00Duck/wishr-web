@@ -8,5 +8,6 @@ import "bootstrap"
 
 import "@/assets/css/global.css"
 import "@/assets/scss/global.scss"
+import "@/assets/css/snow.css"
 
 createApp(App).use(router).mount('#app')

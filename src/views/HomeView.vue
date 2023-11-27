@@ -106,6 +106,8 @@ export default {
 <style>
 button.nav-link {
   font-size: calc(.80rem + .3vw) !important;
-
+}
+.nav-item {
+  z-index: 1;
 }
 </style>
