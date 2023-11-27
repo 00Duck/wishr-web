@@ -52,8 +52,10 @@
                         <button type="button" @click.prevent="unreserveItem(item)"
                             v-else-if="item.ReservedBy == current_user.ID" class="btn btn-danger"><i
                                 class="iconoir-remove-from-cart"></i><span>Release item</span></button>
-                        <button v-else class="btn btn-light" disabled><i class="iconoir-info-empty"></i><span><b>{{
-                            item.ReservedByFullName }}</b> is getting this item</span></button>
+                        <div v-else>
+                            <button type="button" class="btn btn-primary" style="width:100%;" disabled><i class="iconoir-gift"></i><span>Reserve item</span></button>
+                            <div class="wl-reserved-txt mt-1"><span>Someone else is getting this</span></div>
+                        </div>
                     </div>
                     <div v-else class="d-flex flex-column gap-1">
                         <a :href="getURL(item.URL)" class="btn btn-outline-primary" rel="noreferrer" target="_blank"
@@ -189,6 +191,12 @@ export default {
 </script>
 
 <style>
+.wl-reserved-txt {
+    font-size: .75rem;
+    color: var(--bs-secondary);
+    font-weight: bold;
+
+}
 .wl-no-list-bg {
     mask: url(@/assets/not-found.svg);
     mask-size: contain;

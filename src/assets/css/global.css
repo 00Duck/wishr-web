@@ -192,9 +192,9 @@ button:disabled,
 button[disabled=true],
 div:disabled,
 div[disabled=true] {
-    background-color: #ccc;
-    color: #777;
-    cursor: not-allowed;
+    background-color: #ccc!important;
+    color: #777!important;
+    border-color: #ccc!important;
 }
 
 .required:before {
