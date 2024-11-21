@@ -9,19 +9,29 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/wishlist/shared',
+    name: 'wl-shared',
+    component: () => import(/* webpackChunkName: "wl-shared" */ '../views/SharedWithMeView.vue')
+  },
+  {
+    path: '/wishlist/browse',
+    name: 'wl-browse',
+    component: () => import(/* webpackChunkName: "wl-browse" */ '../views/BrowseListView.vue')
+  },
+  {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChungName: "login" */ '../views/LoginView.vue')
+    component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import(/* webpackChungName: "register" */ '../views/RegisterView.vue')
+    component: () => import(/* webpackChunkName: "register" */ '../views/RegisterView.vue')
   },
   {
     path: '/passwordreset/:token',
     name: 'passwordreset',
-    component: () => import(/* webpackChungName: "resetpassword" */ '../views/PasswordResetView.vue')
+    component: () => import(/* webpackChunkName: "passwordreset" */ '../views/PasswordResetView.vue')
   },
   {
     path: '/wishlist/create',
@@ -54,7 +64,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import(/* webpackChungName: "notfound" */ '../views/NotFoundView.vue')
+    component: () => import(/* webpackChungName: "NotFound" */ '../views/NotFoundView.vue')
   }
 ]
 

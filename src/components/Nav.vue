@@ -10,21 +10,39 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    <li class="nav-item-space"></li>
+                    <li class="nav-item-header">My Wish Lists</li>
                     <li class="nav-item">
-                        <router-link :to="{ 'name': 'home' }" class="wl-link"><i
-                                class="iconoir-home-simple-door"></i>Home</router-link>
+                        <router-link :to="{ 'name': 'home' }" class="wl-link"><i class="iconoir-home-simple-door"></i>My
+                            Lists</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link :to="{ 'name': 'wl-create' }" class="wl-link"><i
-                                class="iconoir-add-database-script"></i>Create Wishlist</router-link>
+                                class="iconoir-add-database-script"></i>Create Wish List</router-link>
+                    </li>
+                    <li class="nav-item-space"></li>
+                    <li class="nav-item-header">Other Wish Lists</li>
+                    <li class="nav-item">
+                        <router-link :to="{ 'name': 'wl-shared' }" class="wl-link"><i
+                                class="iconoir-share-android"></i>Shared With Me</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{ 'name': 'profile' }" class="wl-link"><i class="iconoir-profile-circle"></i>My
-                            Profile</router-link>
+                        <router-link :to="{ 'name': 'wl-browse' }" class="wl-link"><i
+                                class="iconoir-community"></i>Browse Public Lists</router-link>
+                    </li>
+                    <li class="nav-item-space"></li>
+                    <li class="nav-item">
+                        <router-link :to="{ 'name': 'profile' }" class="wl-link"><i
+                                class="iconoir-profile-circle"></i>My Profile</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link :to="{ 'name': 'about' }" class="wl-link"><i
                                 class="iconoir-info-empty"></i>About</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <a @click.prevent="logOut()" class="wl-link">
+                            <i class="iconoir-log-out"></i><span>Log Out</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -33,10 +51,34 @@
 </template>
 
 <script>
+import { EventBus } from '@/event-bus';
+import axios from 'axios';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
     setup() {
+        const router = useRouter()
 
-        return {}
+        async function logOut() {
+            if (confirm('Are you sure you want to log out?')) {
+                await axios.post('/api/open/logout')
+                    .then(response => {
+                        EventBus.emit('notify', {
+                            type: 'info',
+                            text: 'You have been logged out.'
+                        })
+                        localStorage.removeItem('user')
+                        router.push({ name: 'login' })
+                    })
+                    .catch(err => {
+                        console.log(error)
+                    })
+            }
+
+        }
+
+        return { logOut }
     }
 }
 </script>
@@ -48,14 +90,15 @@ export default {
 
 .wl-link {
     display: block;
-    padding: 12px;
+    padding: 10px;
     cursor: pointer;
     border-radius: 8px;
     color: white;
     text-decoration: none;
 }
 
-.wl-link i {
+.wl-link i,
+.nav-item-header i {
     display: inline-block;
     margin-right: 5px;
     margin-top: 2px;
@@ -81,43 +124,67 @@ export default {
 }
 
 .navbar-nav .router-link-exact-active {
-    color: #FFF!important;
+    color: #FFF !important;
     background-color: var(--bs-link-hover-color);
 }
 
-.navbar-nav a:hover {
+.navbar-nav a:hover:not(.router-link-active) {
     color: #FFF;
-    text-decoration-style:solid;
-    text-decoration-line: underline;
+    /* text-decoration-style:solid;
+    text-decoration-line: underline; */
+    background-color: rgba(77, 86, 98, 0.502);
 }
 
 .navbar-collapse {
     margin-top: 5px;
 }
 
+.nav-item-header {
+    color: #B5B5B5;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.nav-item-header:after {
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #B5B5B5;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-item-space {
+    margin: 20px 0px;
+}
+
 @media (min-width: 768px) {
     .wl-nav {
         position: fixed !important;
         min-width: 200px;
-        max-width: 200px;
+        max-width: 250px;
         z-index: 1;
         height: 100%;
-        padding-left: 10px !important;
         left: 0;
         top: 0;
         align-content: flex-start;
     }
+
     .navbar-expand-md {
-        flex-wrap: wrap!important;
+        flex-wrap: wrap !important;
         justify-content: flex-start;
     }
+
     .navbar-expand-md .navbar-nav {
-        flex-direction: column!important;
+        flex-direction: column !important;
         justify-content: flex-start;
     }
+
     .navbar .container-fluid {
         flex-direction: column;
-        align-items: flex-start!important;
+        align-items: flex-start !important;
     }
 }
 </style>

@@ -27,11 +27,6 @@
                             <input type="text" class="form-control" v-model="profile.FullName" placeholder="Full name" disabled>
                             <label>Full name</label>
                         </div>
-                        <div class="d-flex flex-row gap-2 justify-content-center mt-4">
-                            <button type="button" @click.prevent="logOut()" class="btn btn-danger wl-logout-btn">
-                                <i class="iconoir-log-out"></i><span>Log Out</span>
-                            </button>
-                        </div>
                     </div>
                 </div>                
             </div>
@@ -68,21 +63,6 @@ export default {
                 })
             // await loadProfileAvatar()
         })
-
-        async function logOut() {
-            await axios.post('/api/open/logout')
-                .then(response => {
-                    EventBus.emit('notify', {
-                        type: 'info',
-                        text: 'You have been logged out.'
-                    })
-                    localStorage.removeItem('user')
-                    router.push({ name: 'login' })
-                })
-                .catch(err => {
-                    console.log(error)
-                })
-        }
 
         function toggleOverlay(val) {
             overlay.value = val
@@ -129,7 +109,7 @@ export default {
                 })
         }
 
-        return { loading, profile, logOut, toggleOverlay, overlay, openFileUpload, handleUpload, fileUploadData }
+        return { loading, profile, toggleOverlay, overlay, openFileUpload, handleUpload, fileUploadData }
     }
 }
 </script>

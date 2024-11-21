@@ -40,10 +40,16 @@ export default {
 </script>
 
 <style>
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
 .wl-about-list {
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 1.5em;
   margin-bottom: 1rem;
 }
 
