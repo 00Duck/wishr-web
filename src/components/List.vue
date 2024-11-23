@@ -7,7 +7,8 @@
             <div class="wl-icon text-primary d-flex align-items-center me-2"><i class="iconoir-bookmark-book"></i></div>
             <div class="wl-list-item-content">
                 <div class="d-flex flex-column flex-wrap">
-                    <div class="h3">{{ item.Name }}</div>
+                    
+                    <div class="h3 d-flex align-items-center gap-3"><div>{{ item.Name }}</div><div :class="'badge wl-access-badge' + (item.AccessMode == 'public' ? ' wl-access-badge-public' : ' wl-access-badge-private')">{{ item.AccessMode }}</div></div>
                     <small class="text-muted">Last updated {{ new Date(item.UpdatedAt).toDateString() }}</small>
                     <small class="text-primary fs-6" v-if="!item.IsOwner"><b>Shared by {{ item.OwnerFullName }}</b></small>
                 </div>
@@ -133,5 +134,18 @@ export default {
     height: 220px;
     background: #a5a5ab;
     margin: auto;
+}
+
+.wl-access-badge {
+    font-size: 0.75rem!important;
+    text-transform: capitalize;
+}
+.wl-access-badge-public {
+    background-color: rgb(219, 125, 32);
+    color: rgb(252, 206, 159) !important;
+}
+.wl-access-badge-private {
+    background-color: rgb(4, 109, 154);
+    color: rgb(113, 211, 252) !important;
 }
 </style>

@@ -18,6 +18,10 @@
                     <div>Shared by</div>
                     <div class="wishr-badge-green">{{ list.OwnerFullName }}</div>
                 </div>
+                <div class="wishr-badge" v-if="list.IsOwner">
+                    <div>Share mode</div>
+                    <div class="wishr-badge-mint">{{ list.AccessMode }}</div>
+                </div>
                 <div class="wishr-badge">
                     <div>Created on</div>
                     <div class="wishr-badge-purple">{{ new Date(list.CreatedAt).toDateString() }}</div>

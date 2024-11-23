@@ -100,6 +100,10 @@ a[class^=card] {
     background-color: #c615cc;
 }
 
+.wishr-badge-mint {
+    background-color: #13a378;
+}
+
 /* End badge */
 
 /* Needed for icon alignment */
@@ -216,4 +220,25 @@ div[disabled=true] {
     width: 100px;
     background-size: contain;
     margin: auto;
+}
+
+/* User Badge with Avatar */
+.wl-share-users {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.wl-share-users div {
+    background-color: #eee;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    border-radius: 12px;
+    padding: 1px 0px;
+}
+
+.wl-share-users div > span {
+    display: flex;
+    align-self: center;
 }

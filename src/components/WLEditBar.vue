@@ -78,7 +78,14 @@ export default {
             if (props.list.Name == '') {
                 EventBus.emit('notify', {
                     type: 'error',
-                    text: 'You must enter a wishlist name.'
+                    text: 'You must enter a wish list name.'
+                })
+                return false
+            }
+            if (props.list.AccessMode == '') {
+                EventBus.emit('notify', {
+                    type: 'error',
+                    text: 'You must enter a wish list sharing mode.'
                 })
                 return false
             }

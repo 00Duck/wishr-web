@@ -7,8 +7,15 @@
                 <h2 v-if="list.ID != ''" class="d-flex align-content-center justify-content-center">Edit List</h2>
                 <h2 v-else class="d-flex align-content-center justify-content-center">Create List</h2>
                 <div class="wishr-field">
-                    <label class="form-label wl-required">Wishlist name</label>
+                    <label class="form-label wl-required">Wish List Name</label>
                     <input type="text" v-model="list.Name" placeholder="" @change="has_changes = true">
+                </div>
+                <div class="wishr-field">
+                    <label class="form-label wl-required">Wish List Sharing Mode</label>
+                    <select class="form-select" v-model="list.AccessMode" aria-label="Wish List Sharing Mode" @change="has_changes = true">
+                        <option value="public">Public - list is visible to anyone</option>
+                        <option value="private">Private - you decide who to share this list with</option>
+                    </select>
                 </div>
             <transition-group name="itemlist">
                 <div v-for="item, index in list.Items" :key="item.RowKey" class="my-5 wl-list-item-cont">
@@ -134,6 +141,7 @@ export default {
             ItemCount: 0,
             Items: [],
             Owner: "",
+            AccessMode: "public",
             PersonalItem: false,
             IsOwner: true
         })
