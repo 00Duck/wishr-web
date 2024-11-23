@@ -41,10 +41,6 @@ export default {
 
 <style>
 
-h2 {
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
 
 .wl-about-list {
   display: flex;

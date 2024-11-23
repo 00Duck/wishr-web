@@ -1,5 +1,4 @@
 <template>
-    <h2 class="h2 my-4" style="font-style:italic;">{{ title }}</h2>
     <div v-if="loading" class="wishr-loading"></div>
     <div v-else>
         <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }"
@@ -35,6 +34,7 @@ import { onMounted } from 'vue'
 
 export default {
     props: ['title', 'list_url', 'list_empty_msg', 'bg'],
+    components: { },
     setup(props) {
         const list = ref([])
         const list_err = ref(null)

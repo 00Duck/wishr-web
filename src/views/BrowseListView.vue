@@ -2,9 +2,9 @@
   <Nav></Nav>
   <div class="wl-content">
     <div class="wl-card py-3">
-      Coming soon! -ish
       <!-- <List :list_url="shared_lists_url" :title="shared_wl_title" :list_empty_msg="shared_list_empty"
         :bg="shared_list_bg"></List> -->
+        <HeaderBar :title="'Browse Public Wish Lists'" :icon_name="'iconoir-community'"></HeaderBar>
 
     </div>
   </div>
@@ -15,13 +15,15 @@
 import { onMounted, ref } from 'vue'
 import List from '@/components/List.vue'
 import Nav from '@/components/Nav.vue'
+import HeaderBar from '@/components/HeaderBar.vue'
 import { useRouter } from 'vue-router'
 
 export default {
-  components: { List, Nav },
+  components: { List, Nav, HeaderBar },
   setup() {
 
     const router = useRouter()
+
 
     onMounted(async () => {
 
@@ -32,9 +34,7 @@ export default {
     // const shared_list_empty = ref("No one has shared anything with you yet. Ask others to share their lists with you!")
     // const shared_list_bg = ref('wl-bg-share')
 
-    return {
-      //shared_lists_url, shared_wl_title, shared_list_empty, shared_list_bg
-    }
+    return { }
   }
 }
 </script>
