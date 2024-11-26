@@ -27,16 +27,17 @@
               </tr>
               <tr v-else v-for="item in list" :key="item.ID" v-if="list.length > 0" class="position-relative">
                 <td>
-                  <div class="d-flex align-items-center text-nowrap wl-primary-link">
-                    <div class="wl-avatar">
-                      <i class="iconoir-bookmark-book"></i>
+                  <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="wl-primary-link">
+                    <div class="d-flex align-items-center text-nowrap">
+                      <div class="wl-avatar">
+                        <i class="iconoir-bookmark-book"></i>
+                      </div>
+                      <div class="ms-3">
+                        <div>{{ item.Name }}</div>
+                        <small class="text-muted">Last updated {{ new Date(item.UpdatedAt).toDateString() }}</small>
+                      </div>
                     </div>
-                    <div class="ms-3">
-                      <router-link :to="{ name: 'wl-detail', params: { id: item.ID } }" class="stretched-link">{{
-                        item.Name }}</router-link>
-                      <small class="text-muted">Last updated {{ new Date(item.UpdatedAt).toDateString() }}</small>
-                    </div>
-                  </div>
+                  </router-link>
                 </td>
                 <td>
                   <div class="d-flex align-items-center text-nowrap">
@@ -94,7 +95,7 @@ export default {
     function getFormattedDate(dt) {
       let date = new Date(dt);
       return (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear()
-    }    
+    }
 
     return { list, loading, getFormattedDate }
   }
@@ -108,8 +109,7 @@ export default {
     padding: 1rem 1.5rem 1rem 0.5rem;
   }
 
-  .wl-primary-link a {
-    display: block;
+  .wl-primary-link {
     text-decoration: none;
   }
 
